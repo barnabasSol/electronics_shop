@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="create_account.css" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Account</title>
+  </head>
+  <body>
+    <main class="wrapper">
+      <header class="progress_container">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </header>
+      <header class="create_accnt_header">
+        <div class="cal_container">
+          <span class="create_accnt_lbl">Create Account</span>
+        </div>
+      </header>
+      <section class="main_section">
+        <form action="create_account.php" method="POST">
+          
+          <section class="create_1">
+            <div class="fname_div">
+              <span class="fname_lbl">First Name</span>
+              <input class="fname" type="text" name="fname" id="" />
+              <span class="err_fname">please give proper input</span>
+            </div>
+            <div class="lname_div">
+              <span class="lname_lbl">Last Name</span>
+              <input class="lname" type="text" name="lname" id="" />
+              <span class="err_lname">please give proper input</span>
+            </div>
+            <div class="email_div">
+              <span class="email_lbl">Email</span>
+              <input class="email" type="email" name="email" id="" />
+              <span class="err_email">please give proper input</span>
+            </div>
+            <div class="pnum_div">
+              <span class="pnum_lbl">Phone</span>
+              <input class="phone" type="tel" name="phone_num" id="" />
+              <span class="err_phone">please give proper input</span>
+            </div>
+          </section>
+
+          <section class="create_2">
+            <select name="acc_type" id="account_type_input">
+              <option selected disabled value="None">Account Type</option>
+              <option value="Buyer">Buyer</option>
+              <option value="Seller">Seller</option>
+            </select>
+            <div class="gender_div">
+              <span class="g_title">Gender</span>
+              <div class="gender_options">
+                <input type="radio" name="gender" id="male" value="Male" />
+                <label for="male">Male</label>
+                <input type="radio" name="gender" id="female" value="Female" />
+                <label for="female">Female</label>
+                <input type="radio" name="gender" id="other" value="Other" />
+                <label for="other">Other</label>
+              </div>
+            </div>
+            <div class="date_div">
+              <span class="date_title">Date of Birth</span>
+              <input type="date" name="dob" id="dob" />
+            </div>
+          </section>
+          <div class="submit_btn_container">
+            <input class="submit_btn" type="submit" value="Create Account" />
+          </div>
+        </form>
+        <div class="button_container">
+          <button class="prev_btn">Previous</button>
+          <button class="next_btn">Next</button>
+        </div>
+      </section>
+      <script src="create_account.js"></script>
+    </main>
+  </body>
+</html>
