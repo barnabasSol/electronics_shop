@@ -1,12 +1,10 @@
 <?php
-echo $_POST['fname'];
+echo $_POST['first_name'];
 echo "<br>";
-echo $_POST['lname'];
+echo $_POST['last_name'];
 echo "<br>";
 echo $_POST['email'];
 echo "<br>";
 echo $_POST['phone'];
-
-
 ?>
 
