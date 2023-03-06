@@ -79,6 +79,7 @@ function dob_set() {
 let all_true_1 = true;
 let all_true_2 = true;
 let all_true_3 = true;
+
 //THE NEXT BUTTON
 next_btn.addEventListener("click", function (event) {
   event.preventDefault();

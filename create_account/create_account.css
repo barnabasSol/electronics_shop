@@ -18,8 +18,13 @@ html {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background-color: #ead2b8;
   margin: 0;
+  height: auto;
 }
 
 .progress_container {
