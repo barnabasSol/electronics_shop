@@ -2,6 +2,7 @@ html {
   background-color: #ead2b8;
 }
 .wrapper {
+  box-sizing: border-box;
   background-image: url(images/shop1.jpg);
   background-color: transparent;
   display: flex;
@@ -9,12 +10,13 @@ html {
   flex-wrap: wrap;
   align-content: center;
   margin-top: 0px;
-  padding-top: 10px;
+  padding-top: 25px;
   padding-bottom: 80px;
   width: 100%;
   background-size: cover;
   background-position: center;
   margin: 0px;
+  min-height: 100vh;
 }
 
 body {
