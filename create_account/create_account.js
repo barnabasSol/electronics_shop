@@ -182,6 +182,7 @@ prev_btn.addEventListener("click", function (event) {
     prev_btn.style.display = "none";
     bar_1.style.backgroundColor = "purple";
     bar_2.style.backgroundColor = "white";
+    next_btn.style.backgroundColor = "#4e31aa";
 
     create_2.style.opacity = "0";
     create_2.style.transform = "translateX(-189px)";
