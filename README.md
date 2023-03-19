@@ -2,7 +2,7 @@
 ## Web Dev 1 (Defense Project)
 a site for buying and selling electronics for the people.
 
-## Made Usig
+## Made Using
 * HTML5
 * CSS
 * JS 
