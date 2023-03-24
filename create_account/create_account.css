@@ -1,44 +1,35 @@
-html {
+html,
+body {
   background-color: #ead2b8;
+  margin: 0;
+  padding: 0;
 }
 .wrapper {
-  box-sizing: border-box;
   background-image: url(images/shop1.jpg);
   background-size: cover;
   background-position: auto;
-  background-color: transparent;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   align-content: center;
   margin-top: 0px;
-  padding-top: 25px;
+  padding-top: 16px;
   padding-bottom: 80px;
   width: 100%;
   margin: 0px;
-  min-height: 100vh;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #ead2b8;
-  margin: 0;
-  height: auto;
 }
 
 .progress_container {
-  position: fixed;
-  top: 3;
-  width: 100%;
+  width: 100vw;
   height: 30px;
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: center;
   gap: 20px;
   margin-top: 0px;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 span {
   color: white;
@@ -47,15 +38,16 @@ span {
 }
 .bar1 {
   background-color: purple;
-  width: 210px;
+  width: 30vmin;
   height: 5px;
   border-radius: 10px;
   margin: 0;
   transition: background-color 0.5s;
 }
-.bar2, .bar3 {
+.bar2,
+.bar3 {
   background-color: white;
-  width: 210px;
+  width: 30vmin;
   height: 5px;
   border-radius: 10px;
   margin: 0;
@@ -65,7 +57,8 @@ span {
 .fname,
 .lname,
 .phone,
-.email {
+.email,
+.psw {
   width: 270px;
   height: 40px;
   margin: 5px;
@@ -77,10 +70,10 @@ span {
 .err_fname,
 .err_lname,
 .err_email,
-.err_phone, 
-.err_psw, 
-.err_acc_type, 
-.err_gender, 
+.err_phone,
+.err_psw,
+.err_acc_type,
+.err_gender,
 .err_dob {
   margin-top: 3px;
   color: red;
@@ -100,19 +93,21 @@ span {
 }
 
 .create_accnt_header {
-  margin-top: 36px;
+  margin-top: 65px;
   background-color: transparent;
   height: auto;
-  width: 100%;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   flex-wrap: wrap;
   align-content: center;
+  align-content: center;
   margin-bottom: 35px;
 }
 
 .cal_container {
+  text-align: center;
   background-color: rgb(165, 47, 165, 0.2);
   padding-left: 20px;
   padding-right: 20px;
@@ -125,14 +120,12 @@ span {
 .create_accnt_lbl {
   font-family: monospace;
   color: white;
-  font-size: 40px;
+  font-size: 3em;
 }
 
 .main_section {
-  height: auto;
-  width: auto;
-  max-width: 1000px;
-  width: 1500px;
+  /* min-height: 20vmax; */
+  width: 100%;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -143,8 +136,6 @@ span {
 }
 
 .create_1 {
-  width: auto;
-  height: auto;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -155,35 +146,33 @@ span {
   background-color: rgb(165, 47, 165, 0.2);
   margin-bottom: 27px;
   transition: scale 0.3s, transform 0.5s, opacity 0.4s;
-  padding: 70px;
+  padding: 50px;
+  width: 60vw;
+  height: fit-content;
   /* transform: rotateY(180deg); */
 }
 
-.create_2, .create_3 {
+.create_2,
+.create_3 {
   opacity: 0;
-  width: auto;
-  height: 365px;
+  width: 20em;
+  min-height: 325px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: start;
+  justify-content: space-evenly;
+  align-items: center;
   flex-wrap: wrap;
-  align-content: flex-start;
+  align-content: center;
   border: 1px solid white;
   border-radius: 10px;
   gap: 25px;
   background-color: rgb(165, 47, 165, 0.25);
   margin-bottom: 27px;
   transition: scale 0.3s, transform 0.5s, opacity 0.8s;
-  padding-left: 222px;
-  padding-right: 222px;
-  z-index: 4;
   transform: translateX(-200px);
   display: none;
+  /* padding: 0 190px 0 190px; */
 }
-
-
-
 
 #account_type_input {
   background-color: #4e31aa;
@@ -199,7 +188,7 @@ span {
   color: white;
   transition: scale 0.2s;
 }
-#account_type_input:focus{
+#account_type_input:focus {
   scale: 1.04;
 }
 
@@ -239,7 +228,7 @@ label {
 }
 #dob {
   width: 230px;
-  height: 45px;
+  height: 40px;
   font-size: 16px;
   text-align: center;
   background-color: #4e31aa;
@@ -255,28 +244,26 @@ label {
   margin: 5px;
 }
 
-.fname_div, 
-.lname_div, 
-.pnum_div, 
-.email_div, 
-.psw_div
- {
-  width: 300px;
+.fname_div,
+.lname_div,
+.pnum_div,
+.email_div,
+.psw_div {
+  width: fit-content;
   height: 100px;
   display: flex;
   flex-direction: column;
 }
-.confirm_psw_div{
-  width: 300px;
+.confirm_psw_div {
+  width: fit-content;
   height: 100px;
   display: flex;
   flex-direction: column;
 }
-.c_psw_lbl{
+.c_psw_lbl {
   margin-left: 6px;
   margin-bottom: 7px;
 }
-
 
 .button_container {
   display: none;
@@ -307,7 +294,8 @@ label {
   scale: 0.9;
 }
 
-.next_btn, .submit_btn {
+.next_btn,
+.submit_btn {
   height: 40px;
   border-radius: 10px;
   border: none;
@@ -317,11 +305,12 @@ label {
   color: white;
   transition: width 0.3s, scale 0.3s, transform 0.3s, opacity 0.4s;
 }
-.submit_btn{
+.submit_btn {
   display: none;
   background-color: rgb(16, 211, 16);
 }
-.next_btn:hover, .submit_btn:hover {
+.next_btn:hover,
+.submit_btn:hover {
   opacity: 0.8;
 }
 

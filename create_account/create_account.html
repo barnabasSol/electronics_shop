@@ -14,14 +14,14 @@
         <div class="bar2"></div>
         <div class="bar3"></div>
       </header>
-      <section class="main_section">
       <header class="create_accnt_header">
         <div class="cal_container">
           <span class="create_accnt_lbl">Create Account</span>
         </div>
       </header>
+      <section class="main_section">
         <form action="create_account.php" method="POST">
-          <section class="create_1">
+          <div class="create_1">
             <div class="fname_div">
               <span class="fname_lbl">First Name</span>
               <input class="fname" type="text" name="first_name" id="" />
@@ -42,9 +42,9 @@
               <input class="phone" type="tel" name="phone" id="" />
               <span class="err_phone">please give proper input</span>
             </div>
-          </section>
+          </div>
 
-          <section class="create_2">
+          <div class="create_2">
             <div class="acc_type_div">
               <select name="acc_type" id="account_type_input">
                 <option selected disabled value="None">Account Type</option>
@@ -70,18 +70,20 @@
               <input type="date" name="dob" id="dob" />
               <span class="err_dob">please enter the dob field</span>
             </div>
-          </section>
-          <section class="create_3">
+          </div>
+
+          <div class="create_3">
             <div class="psw_div">
               <span class="fname_lbl">Password</span>
-              <input class="fname" type="text" name="fname" id="" />
+              <input class="psw" type="password" name="password" id="" />
             </div>
-            <div class="confirm_psw_div">
+            <div class="psw_div">
               <span class="c_psw_lbl">Confirm Password</span>
-              <input class="lname" type="text" name="lname" id="" />
+              <input class="psw" type="password" name="confirm_password" id="" />
               <span class="err_psw">please give proper input</span>
             </div>
-          </section>
+          </div>
+
           <div class="button_container">
             <button class="prev_btn">Previous</button>
             <button class="next_btn">Next</button>

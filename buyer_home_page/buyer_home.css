@@ -1,0 +1,127 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+}
+aside {
+  z-index: 1;
+  position: absolute;
+  width: 0%;
+  height: 100%;
+  background-color: yellow;
+  transition: width 0.5s;
+}
+header {
+  position: absolute;
+  height: 12%;
+  width: 100%;
+  background-color: greenyellow;
+  bottom: 88%;
+}
+
+.box1 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 190px;
+  height: 150px;
+  background-color: pink;
+  border-radius: 10px;
+}
+
+.expand{
+    display: none;
+    position: absolute;
+    height: 63%;
+    width: 50%;
+    background-color: red;
+    top: 24%;
+    bottom: 20%;
+    left: 24%;
+    border-radius: 20px;
+}
+
+main {
+  position: relative;
+  position: absolute;
+  height: 70%;
+  width: 78%;
+  display: flex;
+  justify-content: center;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  gap: 10px;
+  left: 10%;
+}
+
+.next {
+  position: fixed;
+  height: 30px;
+  width: 80px;
+  top: 90%;
+  transition: transform 0.5s, scale 0.5s;
+}
+.cart{
+  z-index: 1;
+  width: 110px;
+  height: 110px;
+  position: absolute;
+  left: 90%;
+  border-radius: 50%;
+  border: none;
+  bottom: 1%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cart img{
+  height: 90px;
+  width: 90px;
+
+}
+.next:active{
+    transform: rotate(360deg);
+    scale: 2;
+}
+
+@media (width <500px){
+  main{
+    width: 100%;
+    left: 0%;
+  }
+  .box1{
+    width: 96%;
+    height: 230px;
+  }
+
+  .expand{
+    width: 90%;
+    left: 5%;
+  }
+
+  .cart{
+    left: 70%;
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (width < 920px) and (width > 500px) {
+  .expand{
+    top: 34%;
+    width: 80%;
+    height: 50%;
+    left: 9%;
+  }
+  main{
+    width: 90%;
+    left: 5%;
+  }
+  .cart{
+    left: 86%;
+  }
+}
