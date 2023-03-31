@@ -22,7 +22,10 @@ CREATE TABLE users (
   last_name VARCHAR(200),
   phone VARCHAR(200),
   email VARCHAR(200),
+  DOB DATE,
+  gender varchar(2),
   account_type_id VARCHAR(200),
+  password varchar(200),
   FOREIGN KEY (account_type_id) REFERENCES account_type(account_type_id)
 );
 
