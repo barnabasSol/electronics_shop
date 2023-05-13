@@ -2,43 +2,134 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="buyer_home.css" />
+    <link rel="stylesheet" href="components/product_item/product_item.css" />
+    <link rel="stylesheet" href="components/cart_item/cart_item.css" />
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Buyer</title>
   </head>
+
   <body>
-    <header>
-      <button>-</button>
-    </header>
-    <aside></aside>
-    <main>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <div class="box1"></div>
-      <button class="next"></button>
-    </main>
-    <button class="cart">
-      <img src="images/cart.png" alt="da_cart" />
-    </button>
-    <div class="expand"></div>
-    <script src="buyer_home.js"></script>
+    <div class="wrapper">
+      <div id="blur">
+        <div id="expand_div">
+          <div id="exp_title">Cart Items</div>
+          <div id="exp_search_div">
+            <input
+              type="text"
+              id="exp_search_input"
+              placeholder="search cart"
+            />
+          </div>
+          <div id="close_exp"><img src="../assets/close.png" alt="" /></div>
+          <div id="exp_items"></div>
+          <div id="exp_buttons_div">
+            <button id="exp_clear_cart">Clear Cart</button>
+            <button id="exp_proceed">Proceed Order</button>
+          </div>
+          <div id="sub_total_div">
+            <span>Sum Total: </span> <span id="sum_tot_value">20,000000</span>
+          </div>
+        </div>
+      </div>
+      <aside>
+        <div class="title">
+        </div>
+        <div class="exit">
+          <button>
+            <img src="images/close.png" alt="" />
+          </button>
+        </div>
+        <div id="info">
+          <span class="full_name"></span>
+          <span class="login_id"></span>
+        </div>
+        <form class="options" action="buyer_process.php" method="GET">
+          <button class="opts" type="submit" name="setting_opt" value="profile">
+            Profile
+          </button>
+          <button class="opts" type="submit" name="setting_opt" value="pending">
+            Pending
+          </button>
+          <button class="opts" type="submit" name="setting_opt" value="notification">
+            Notifiations
+          </button>
+          <button class="opts" type="submit" name="setting_opt" value="history">
+            History
+          </button>
+        </form>
+        <div class="logout_div">
+          <button class="opts" type="submit" name="setting_opt" value="logout">
+            Logout
+          </button>
+        </div>
+      </aside>
+      <header class="left_tab">
+        <button class="left_tab_btn">
+          <img src="images/navigation.png" alt="" />
+        </button>
+      </header>
+      <form class="search_div" action="buyer_process.php" method="GET">
+        <img src="../assets/search_icon.png" alt="" />
+        <input type="search" name="search_value" id="search" />
+      </form>
+      <header class="logo">
+        <img src="images/gadgets.png" alt="logo" />
+      </header>
+      <form class="catagories_div" method="get" action="buyer_process.php">
+        <button
+          clicked
+          class="catagory"
+          type="submit"
+          name="cat_value"
+          value="All"
+        >
+          All
+        </button>
+        <button class="catagory" type="submit" name="cat_value" value="Phones">
+          Phones
+        </button>
+        <button
+          class="catagory"
+          type="submit"
+          name="cat_value"
+          value="Computers"
+        >
+          Computers
+        </button>
+        <button class="catagory" type="submit" name="cat_value" value="Tablets">
+          Tablets
+        </button>
+        <button class="catagory" type="submit" name="cat_value" value="Others">
+          Others
+        </button>
+        <div class="sort_div">
+          <select name="sort_by" id="sort_by">
+            <option selected disabled value="None">Sort By</option>
+            <option value="affordable">Affordable</option>
+            <option value="expensive">Expensive</option>
+            <option value="rating">Rating</option>
+            <option value="seller_reputation">Seller Reputation</option>
+          </select>
+        </div>
+      </form>
+      <div class="left_space"></div>
+      <main class="products_div">
+        <span id="empty_msg">Not Available For Now</span>
+      </main>
+      <div class="right_space">
+        <button class="cart">
+          <div id="cart_units">
+            <span id="cart_units_value">0</span>
+          </div>
+          <img src="images/cart.png" alt="" />
+        </button>
+      </div>
+    </div>
   </body>
 </html>
+<!-- <script src="../jquery/jquery-3.6.4.min.js"></script> -->
+<script src="generate_markup.js"></script>
+<script src="api_request.js"></script>
+<script src="buyer_home.js"></script>

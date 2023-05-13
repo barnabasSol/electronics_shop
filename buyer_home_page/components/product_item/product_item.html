@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="product_item.css" />
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Component</title>
+</head>
+<body>
+  <div class="product">
+    <div class="bubble"><span class="percentage">-20%</span></div>
+    <div class="cover"> <span class="stock">In Stock: $stock</span> <span class="rating">Rating:⭐$rating/5</span> 
+    <span class="details">Details..</span>
+      <div class="amount_div"> 
+        <button class="close">X</button> 
+        <span class="s_value">1</span>
+        <div class="slider_container">
+          <form class="form_amount_input" action="" method="post">
+            <input type="range" value="1" min="1" max="23" name="units" class="units">
+        </form>
+        <input type="submit" value="confirm" name="confirm_btn" class="confirm_btn">
+
+        </form>
+      </div> <button class="add">Add to Cart</button>
+    </div>
+    <div class="img_part"> <img src='http://localhost:8080/electronics_shop/product_images/iphone.jpg' alt="" /> </div>
+    <div class="info"> <span class="name">$product_name - <span class="disc">$price</span></span> </div>
+  </div>
+
+
+
+  <script src="product_item.js"></script>
+</body>
+
+</html>

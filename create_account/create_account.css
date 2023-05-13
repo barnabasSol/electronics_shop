@@ -7,7 +7,7 @@ body {
 .wrapper {
   background-image: url(images/shop1.jpg);
   background-size: cover;
-  background-position: auto;
+  background-position: center;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -74,7 +74,8 @@ span {
 .err_psw,
 .err_acc_type,
 .err_gender,
-.err_dob {
+.err_dob,
+.err_psw {
   margin-top: 3px;
   color: red;
   display: none;
@@ -85,7 +86,8 @@ span {
 .fname:focus,
 .lname:focus,
 .phone:focus,
-.email:focus {
+.email:focus,
+.psw:focus {
   transform: translateY(-10px);
   outline: none;
   box-shadow: 0px 9px 5px rgb(0, 0, 0, 0.5);
@@ -120,11 +122,10 @@ span {
 .create_accnt_lbl {
   font-family: monospace;
   color: white;
-  font-size: 3em;
+  font-size: 3rem;
 }
 
 .main_section {
-  /* min-height: 20vmax; */
   width: 100%;
   display: flex;
   justify-content: center;
@@ -147,7 +148,8 @@ span {
   margin-bottom: 27px;
   transition: scale 0.3s, transform 0.5s, opacity 0.4s;
   padding: 50px;
-  width: 60vw;
+  /* width: 60vw; */
+  max-width: 60vw;
   height: fit-content;
   /* transform: rotateY(180deg); */
 }
@@ -286,16 +288,7 @@ label {
   transition: width 0.3s, scale 0.3s, transform 0.3s, opacity 0.4s;
 }
 
-.prev_btn:hover {
-  opacity: 0.8;
-}
-
-.prev_btn:active {
-  scale: 0.9;
-}
-
-.next_btn,
-.submit_btn {
+.prev_btn2{
   height: 40px;
   border-radius: 10px;
   border: none;
@@ -304,9 +297,40 @@ label {
   background-color: #4e31aa;
   color: white;
   transition: width 0.3s, scale 0.3s, transform 0.3s, opacity 0.4s;
+  display: none;
 }
+
+.prev_btn:hover {
+  opacity: 0.8;
+}
+
+.prev_btn:active {
+  scale: 0.9;
+}
+.next_btn{
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  width: 100px;
+  cursor: pointer;
+  background-color: pink;
+  color: white;
+  transition: width 0.3s, scale 0.3s, transform 0.3s, opacity 0.4s;
+  display: none;
+}
+
+
+
+
 .submit_btn {
   display: none;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  width: 100px;
+  cursor: pointer;
+  color: white;
+  transition: width 0.3s, scale 0.3s, transform 0.3s, opacity 0.4s;
   background-color: rgb(16, 211, 16);
 }
 .next_btn:hover,
@@ -317,3 +341,15 @@ label {
 .next_btn:active {
   scale: 0.9;
 }
+
+#val_btn{
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  width: 100px;
+  cursor: pointer;
+  background-color: rebeccapurple;
+  color: white;
+  transition: width 0.3s, scale 0.3s, transform 0.3s, opacity 0.4s;
+}
+

@@ -75,23 +75,36 @@
           <div class="create_3">
             <div class="psw_div">
               <span class="fname_lbl">Password</span>
-              <input class="psw" type="password" name="password" id="" />
+              <input class="psw" type="password" name="password" id="id_psw" />
+              <span class="err_psw">password must match</span>
             </div>
             <div class="psw_div">
               <span class="c_psw_lbl">Confirm Password</span>
-              <input class="psw" type="password" name="confirm_password" id="" />
-              <span class="err_psw">please give proper input</span>
+              <input
+                class="psw"
+                type="password"
+                name="confirm_password"
+                id="id_c_psw"
+              />
+              <span class="err_psw">password must match</span>
             </div>
           </div>
 
           <div class="button_container">
+            <button id="val_btn">Next</button>
             <button class="prev_btn">Previous</button>
+            <button class="prev_btn2">Previous</button>
             <button class="next_btn">Next</button>
-            <input class="submit_btn" type="submit" value="Finish" />
+            <input
+              class="submit_btn"
+              name="submit"
+              type="submit"
+              value="Finish"
+            />
           </div>
         </form>
       </section>
-      <script src="create_account.js"></script>
     </main>
   </body>
-</html>
+  </html>
+  <script src="create_account.js"></script>
