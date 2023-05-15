@@ -56,7 +56,7 @@ class LoginProcess
 
     function process_login($login, $password)
     {
-        if ($this->con->connect_errno) {
+        if (!$this->con) {
             return "error_db_connection";
         } else {
             if ($login) {

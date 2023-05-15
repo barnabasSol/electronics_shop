@@ -10,7 +10,7 @@
   height: 80px;
   display: flex;
   background-color: white;
-  transition: box-shadow 0.3s, transform 0.3s;
+  transition: box-shadow 0.3s, transform 0.3s, height 0.5s;
   border-radius: 25px;
   margin-top: 1%;
   margin-bottom: 3%;

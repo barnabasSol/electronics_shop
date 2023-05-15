@@ -183,16 +183,7 @@ export function generate_product_item_component(product_list) {
 //////////////////////////////////////////CART ITEM COMPONENT////////////////////////////////////
 
 export function generate_cart_item_component(cart_list) {
-  import_api_request().then((mod) => {
-    mod.CartExtras.cart_items.length = 0
   cart_list.forEach((cart_item) => {
-      new mod.CartExtras(
-        cart_item.buyer_id,
-        cart_item.product_c_id,
-        cart_item.product_name,
-        cart_item.units,
-        cleaned_img_path(cart_item.image_path)
-      );
     const cart_item_div = document.createElement("div");
     cart_item_div.classList.add("cart_item");
 
@@ -261,8 +252,57 @@ export function generate_cart_item_component(cart_list) {
     remove_div.append(remove_button);
     cart_item_div.append(remove_div);
 
+    ///////////////////////PLUS BUTTON EVENT/////////////////
+    plus_button.addEventListener("click", () => {
+      if (cart_item.units < cart_item.product_units) {
+        cart_item.units += 1;
+        in_cart_amnt_value.innerHTML = cart_item.units;
+        cart_sub_total.innerHTML = cart_list.reduce(
+          (acc, { product_price, units }) =>
+            acc + parseInt(product_price) * parseInt(units),
+          0
+        );
+      }
+    });
+
+    //////////////////MINUS BUTTON AMOUNT/////////////
+    minus_button.addEventListener("click", () => {
+      if (cart_item.units > 1) {
+        cart_item.units -= 1;
+        in_cart_amnt_value.innerHTML = cart_item.units;
+        cart_sub_total.innerHTML = cart_list.reduce(
+          (acc, { product_price, units }) =>
+            acc + parseInt(product_price) * parseInt(units),
+          0
+        );
+      }
+    });
+
+    ///////////////REMOVE CART ITEM CLICK/////////////////
+    remove_button.addEventListener("click", () => {
+      var new_cart_amount = parseInt(cart_units_value.textContent) - 1;
+      cart_units_value.textContent = new_cart_amount;
+      import_api_request().then((api_mod) => {
+        api_mod.Buyer.current_user().then((user) => {
+          api_mod.CartExtras.delete_cart_item(
+            cart_item.product_c_id,
+            user[0].login_id
+          );
+        });
+        var new_cart = api_mod.CartExtras.cart_items.filter(
+          (item) => item.product_c_id != cart_item.product_c_id
+        );
+        api_mod.CartExtras.cart_items = [...new_cart];
+        cart_list = [...new_cart];
+        cart_sub_total.innerHTML = cart_list.reduce(
+          (acc, { product_price, units }) =>
+            acc + parseInt(product_price) * parseInt(units),
+          0
+        );
+      });
+      cart_item_div.style.display = "none";
+    });
+
     expand_items.append(cart_item_div);
   });
-});
-
 }

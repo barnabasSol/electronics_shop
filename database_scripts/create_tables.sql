@@ -68,8 +68,8 @@ CREATE TABLE ratings (
 CREATE TABLE pending_orders (
   buyer_id VARCHAR(200),
   prod_c_id VARCHAR(200),
-  seller_confirmatiation TINYINT,
-  buyer_confirmatiation TINYINT,
+  seller_confirmatiation TINYINT DEFAULT 0,
+  buyer_confirmatiation TINYINT DEFAULT 0,
   units INT,
   FOREIGN KEY (buyer_id) REFERENCES users(login_id),
   FOREIGN KEY (prod_c_id) REFERENCES product_class(product_class_id)
@@ -125,10 +125,10 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE get_cart_items_of_user(IN buyer_id VARCHAR(200))
 BEGIN
-    SELECT cart.product_c_id, cart.buyer_id, cart.units, first_table.product_name, first_table.image_path 
+    SELECT cart.product_c_id, cart.buyer_id, cart.units, first_table.product_name, first_table.image_path, first_table.units as product_units
     FROM cart 
     JOIN (
-        SELECT product_name, image_path, product_class_id 
+        SELECT product_name, image_path, product_class_id, product_class.units
         FROM product_class 
         JOIN product_images ON product_class.img_id=product_images.image_id
         WHERE image_type = 1
