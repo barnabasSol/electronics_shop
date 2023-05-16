@@ -79,7 +79,10 @@ the_cart.addEventListener("click", () => {
         import_generate_markups().then((mod) => {
           mod.generate_cart_item_component(api_mod.CartExtras.cart_items);
           cart_sub_total.textContent = api_mod.CartExtras.cart_items.reduce(
-            (acc, { product_price, units }) => acc + (parseInt(product_price) * parseInt(units)), 0);
+            (acc, { product_price, units }) =>
+              acc + parseInt(product_price) * parseInt(units),
+            0
+          );
         });
       });
     });
@@ -93,11 +96,7 @@ exp_search_field.addEventListener("input", () => {
     expand_items.innerHTML = "";
     import_generate_markups().then((mk_mod) => {
       if (search_value === "") {
-        api_mod.Buyer.current_user().then((user) => {
-          api_mod.Cart.get_cart_items(user[0].login_id).then((cart_items) => {
-            mk_mod.generate_cart_item_component(cart_items);
-          });
-        });
+        mk_mod.generate_cart_item_component(api_mod.CartExtras.cart_items);
       } else if (api_mod.CartExtras.search_cart(search_value).length != 0) {
         mk_mod.generate_cart_item_component(
           api_mod.CartExtras.search_cart(search_value)
