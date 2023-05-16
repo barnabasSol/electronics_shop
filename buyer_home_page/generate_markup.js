@@ -7,17 +7,18 @@ export function generate_product_item_component(product_list) {
   product_list.forEach((product) => {
     const product_div = document.createElement("div");
     product_div.classList.add("product");
-
-    const bubble_div = document.createElement("div");
-    bubble_div.classList.add("bubble");
-
-    ////////////////////////////////////DISCOUNT
-    const percentage_span = document.createElement("span");
-    percentage_span.classList.add("percentage");
-    percentage_span.textContent = "-" + product.discount * 100 + "%";
-
-    bubble_div.appendChild(percentage_span);
-
+    if (product.discount>0){
+      const bubble_div = document.createElement("div");
+      bubble_div.classList.add("bubble");
+      
+      ////////////////////////////////////DISCOUNT
+      const percentage_span = document.createElement("span");
+      percentage_span.classList.add("percentage");
+      percentage_span.textContent = "-" + product.discount * 100 + "%";
+      
+      product_div.appendChild(bubble_div);
+      bubble_div.appendChild(percentage_span);
+    }
     const cover_div = document.createElement("div");
     cover_div.classList.add("cover");
 
@@ -140,14 +141,18 @@ export function generate_product_item_component(product_list) {
     name_span.classList.add("name");
     name_span.textContent = `${product.product_name} - `;
 
+
     const disc_span = document.createElement("span");
     disc_span.classList.add("disc");
     disc_span.textContent = product.product_price + "birr";
+    
+    if (product.discount<=0){
+      disc_span.style.color = "white"
+    }
 
     name_span.appendChild(disc_span);
     info_div.appendChild(name_span);
 
-    product_div.appendChild(bubble_div);
     product_div.appendChild(cover_div);
     product_div.appendChild(img_part_div);
     product_div.appendChild(info_div);
@@ -184,6 +189,7 @@ export function generate_product_item_component(product_list) {
 
 export function generate_cart_item_component(cart_list) {
   cart_list.forEach((cart_item) => {
+    if (cart_item.show === true){
     const cart_item_div = document.createElement("div");
     cart_item_div.classList.add("cart_item");
 
@@ -304,5 +310,6 @@ export function generate_cart_item_component(cart_list) {
     });
 
     expand_items.append(cart_item_div);
+  }
   });
 }

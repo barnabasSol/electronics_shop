@@ -159,25 +159,22 @@ final class RequestHandler_bp
                 $buyer->insert_in_cart(htmlspecialchars($_POST['buyer_id']), htmlspecialchars($_POST['product_id']), htmlspecialchars($_POST['units']));
             }
         }
-        if ($_SERVER["REQUEST_METHOD"] === "DELETE") {
+        /////////////////REQUEST TO DELETE A CART ITEM//////////////////
+        else if ($_SERVER["REQUEST_METHOD"] === "DELETE") {
             // Read the request body as a JSON string
             $json = file_get_contents("php://input");
           
-            // Decode the JSON string into a PHP array
             $data = json_decode($json, true);
           
             if (isset($data["action"]) && $data["action"] === "delete_from_cart") {
               $product_id = $data["product_id"];
               $current_user = $data["current_user"];
           
-              // Call the delete_cart_item function with the $product_id and $current_user
               $result = $buyer->delete_cart_item($product_id, $current_user);
           
-              // Return the result as a JSON response
               header("Content-Type: application/json");
               echo json_encode(["status" => $result]);
             } else {
-              // Handle invalid or missing "action" parameter
               header("HTTP/1.1 400 Bad Request");
               echo "Invalid or missing action parameter";
             }

@@ -53,10 +53,9 @@ export class Cart {
     return cart_items;
   };
 
-
   static delete_cart_item = async function (p_id, current_user) {
     const url = "buyer_process.php";
-  
+
     const data = {
       product_id: p_id,
       action: "delete_from_cart",
@@ -70,7 +69,7 @@ export class Cart {
         },
         body: JSON.stringify(data),
       });
-  
+
       if (response.ok) {
         // Request was successful
         const result = await response.json();
@@ -99,10 +98,28 @@ export class CartExtras extends Cart {
   }
 
   static search_cart(search_string) {
-    var result = [];
-    result = this.cart_items.filter((ci) =>
-      ci.product_name.toLowerCase().includes(search_string.toLowerCase())
-    );
-    return result;
+    if (search_string === "") {
+      this.cart_items.forEach((element) => {
+        element.show = true;
+      });
+      return this.cart_items;
+    }
+    // var result = [];
+    // result = this.cart_items.filter((ci) =>
+    //   ci.product_name.toLowerCase().includes(search_string.toLowerCase())
+    // );
+    // return result;
+    this.cart_items.forEach((element) => {
+      if (
+        !element.product_name
+          .toLowerCase()
+          .includes(search_string.toLowerCase())
+      ) {
+        element.show = false;
+      }else{
+        element.show = true;
+      }
+    });
+    return this.cart_items;
   }
 }

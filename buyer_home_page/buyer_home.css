@@ -16,7 +16,10 @@ html {
   align-items: center;
   font-size: 1.3rem;
   color: black;
-  position: relative;
+}
+
+.title span{
+  display: none;
 }
 
 .exit {
@@ -62,7 +65,7 @@ html {
 
 
 #info {
-  height: 50px;
+  height: 70px;
   width: 100%;
   position: absolute;
   bottom: 75%;
@@ -71,6 +74,11 @@ html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  grid-area: info;
+}
+
+#info img{
+  height: 50px;
 }
 
 .login_id {
@@ -94,6 +102,8 @@ aside {
     "options options"
     "logout_div logout_div";
 }
+
+
 
 .left_tab {
   background-color: #f0bf8a;

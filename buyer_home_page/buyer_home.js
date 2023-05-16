@@ -75,6 +75,9 @@ the_cart.addEventListener("click", () => {
     api_mod.Buyer.current_user().then((user) => {
       api_mod.Cart.get_cart_items(user[0].login_id).then((cart_items) => {
         api_mod.CartExtras.cart_items = [...cart_items];
+        api_mod.CartExtras.cart_items.forEach((element) => {
+          element.show = true;
+        });
         console.log(api_mod.CartExtras.cart_items);
         import_generate_markups().then((mod) => {
           mod.generate_cart_item_component(api_mod.CartExtras.cart_items);
@@ -95,9 +98,7 @@ exp_search_field.addEventListener("input", () => {
   import_api_request().then((api_mod) => {
     expand_items.innerHTML = "";
     import_generate_markups().then((mk_mod) => {
-      if (search_value === "") {
-        mk_mod.generate_cart_item_component(api_mod.CartExtras.cart_items);
-      } else if (api_mod.CartExtras.search_cart(search_value).length != 0) {
+      if (api_mod.CartExtras.search_cart(search_value).length != 0) {
         mk_mod.generate_cart_item_component(
           api_mod.CartExtras.search_cart(search_value)
         );
