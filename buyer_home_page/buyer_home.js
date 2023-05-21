@@ -8,28 +8,6 @@ async function import_generate_markups() {
   return module;
 }
 
-const left_button = document.querySelector(".left_tab_btn");
-const div_side = document.querySelector("aside");
-const close_btn = document.querySelector(".exit");
-const opt_buttons = document.querySelectorAll(".opts");
-const cat_butns = document.querySelectorAll(".catagory");
-const info_div = document.querySelector("#info");
-const empty_msg = document.querySelector("#empty_msg");
-const blur_bg = document.querySelector("#blur");
-const expand_div = document.querySelector("#expand_div");
-const expand_items = document.querySelector("#exp_items");
-const full_name = document.querySelector(".full_name");
-const login_id = document.querySelector(".login_id");
-const the_cart = document.querySelector(".cart");
-const sort_selected = document.querySelector("#sort_by");
-const products_div_parent = document.querySelector(".products_div");
-const covers = document.querySelectorAll(".cover");
-const cart_units = document.querySelector("#cart_units");
-const exp_search_field = document.querySelector("#exp_search_input");
-const close_exp = document.querySelector("#close_exp");
-const cart_sub_total = document.querySelector("#sum_tot_value");
-let cart_units_value = document.querySelector("#cart_units_value");
-
 /////////////////////////////WHEN PAGE LOADS/////////////////////////////////
 window.addEventListener("load", function () {
   info_div.style.display = "none";
@@ -53,11 +31,42 @@ window.addEventListener("load", function () {
           cart_units.style.display = "flex";
           cart_units_value.textContent = items.length;
         } else {
+          mod.Cart.cart_is_empty = true;
           cart_units.style.display = "none";
         }
       });
     });
   });
+});
+
+/////////////////////////////DETAIL CLICK PROPAGATION STOP////////////////////
+prod_detail_div.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
+
+//////////////////////////search products/////////////////////////////////
+
+search_product.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    products_div_parent.innerHTML = "";
+    cat_butns.forEach((element) => {
+      element.style.borderBottom = "2px solid black";
+      element.style.color = "black";
+    });
+    cat_butns[0].style.color = "purple";
+    cat_butns[0].style.borderColor = "purple";
+    import_api_request().then((api_mod) => {
+      console.log(
+        api_mod.Product.search_products(search_product.value).then(
+          (searched_products) => {
+            import_generate_markups().then((mk_mod) => {
+              mk_mod.generate_product_item_component(searched_products);
+            });
+          }
+        )
+      );
+    });
+  }
 });
 
 /////////////////////////////SORTING OPTION/////////////////////////////
@@ -78,14 +87,15 @@ the_cart.addEventListener("click", () => {
         api_mod.CartExtras.cart_items.forEach((element) => {
           element.show = true;
         });
-        console.log(api_mod.CartExtras.cart_items);
         import_generate_markups().then((mod) => {
           mod.generate_cart_item_component(api_mod.CartExtras.cart_items);
-          cart_sub_total.textContent = api_mod.CartExtras.cart_items.reduce(
-            (acc, { product_price, units }) =>
-              acc + parseInt(product_price) * parseInt(units),
-            0
-          );
+          cart_sub_total.textContent = api_mod.CartExtras.cart_items
+            .reduce(
+              (acc, { product_price, units }) =>
+                acc + parseFloat(product_price) * parseInt(units),
+              0
+            )
+            .toFixed(2);
         });
       });
     });
@@ -111,6 +121,14 @@ exp_search_field.addEventListener("input", () => {
 blur_bg.addEventListener("click", (e) => {
   e.stopPropagation();
   blur_bg.style.display = "none";
+  import_api_request().then((api_mod) => {
+    api_mod.Buyer.current_user().then((user) => {
+      api_mod.Cart.update_cart_content(
+        api_mod.CartExtras.cart_items,
+        user[0].login_id
+      );
+    });
+  });
 });
 
 close_exp.addEventListener("click", () => {
@@ -128,66 +146,45 @@ function cleaned_img_path(path) {
 }
 
 //opens side tab based on different screen size
-left_button.addEventListener("click", () => {
-  if (window.innerWidth < 500) {
-    setTimeout(() => {
-      info_div.style.display = "flex";
-      close_btn.style.display = "flex";
-      opt_buttons.forEach((element) => {
-        element.style.display = "flex";
-      });
-    }, 500);
-    div_side.style.width = "45%";
-    info_div.style.opacity = "1";
-    close_btn.style.opacity = "1";
-    opt_buttons.forEach((element) => {
-      element.style.opacity = "1";
-    });
-  } else if (window.innerWidth < 920) {
-    setTimeout(() => {
-      info_div.style.display = "flex";
-      close_btn.style.display = "flex";
-      opt_buttons.forEach((element) => {
-        element.style.display = "flex";
-      });
-    }, 500);
-    div_side.style.width = "30%";
-    info_div.style.opacity = "1";
-    close_btn.style.opacity = "1";
-    opt_buttons.forEach((element) => {
-      element.style.opacity = "1";
-    });
-  } else {
-    setTimeout(() => {
-      info_div.style.display = "flex";
-      close_btn.style.display = "flex";
-      info_div.style.display = "flex";
-      opt_buttons.forEach((element) => {
-        element.style.display = "flex";
-      });
-    }, 500);
-    div_side.style.width = "30%";
-    info_div.style.opacity = "1";
-    close_btn.style.opacity = "1";
-    opt_buttons.forEach((element) => {
-      element.style.opacity = "1";
-    });
+const load_left_tab_content = () => {
+  const is_small_screen = window.innerWidth < 500;
+
+  let width = "30%";
+  if (is_small_screen) {
+    width = "45%";
   }
-});
+
+  close_btn_img.style.opacity = "1";
+  setTimeout(() => {
+    info_div.style.display = "flex";
+    close_btn.style.display = "flex";
+    close_btn_img.style.display = "flex";
+    opt_buttons.forEach((element) => {
+      element.style.display = "flex";
+    });
+    info_div.style.opacity = "1";
+    opt_buttons.forEach((element) => {
+      element.style.opacity = "1";
+    });
+  }, 500);
+
+  div_side.style.width = width;
+};
+
+left_button.addEventListener("click", load_left_tab_content);
 
 //event to close the side tab
 close_btn.addEventListener("click", () => {
   div_side.style.width = "0%";
-  info_div.style.display = "none";
   setTimeout(() => {
-    close_btn.style.display = "none";
+    close_btn_img.style.display = "none";
     opt_buttons.forEach((element) => {
       element.style.display = "none";
     });
   }, 300);
   // top_text.style.opacity = "0";
   info_div.style.opacity = "0";
-  close_btn.style.opacity = "0";
+  close_btn_img.style.opacity = "0";
   opt_buttons.forEach((element) => {
     element.style.opacity = "0";
   });
@@ -221,4 +218,44 @@ cat_butns.forEach((element) => {
         });
     });
   });
+});
+
+////////////////////////////PROCEEDING TO ORDER///////////////
+exp_proceed_btn.addEventListener("click", () => {
+  import_api_request().then((api_mod) => {
+    if (api_mod.CartExtras.cart_items.length != 0) {
+      api_mod.Buyer.make_order(api_mod.CartExtras.cart_items).then((status) => {
+        if (status === "success") {
+          alert("your order went successful!");
+          api_mod.CartExtras.cart_items = [];
+          expand_items.innerHTML = "";
+          cart_units_value.innerHTML = "0";
+          cart_sub_total.innerHTML = "0.00";
+        }
+      });
+    }
+  });
+});
+
+////////////////////////////CLEAR CART////////////////////////
+exp_clear_cart_btn.addEventListener("click", () => {
+  import_api_request().then((api_mod) => {
+    api_mod.Buyer.current_user().then((user) => {
+      console.log(user[0].login_id);
+      api_mod.Cart.delete_cart_content(user[0].login_id).then((response) => {
+        if (response.result === "success") {
+          api_mod.CartExtras.cart_items = [];
+          expand_items.innerHTML = "";
+          cart_units_value.innerHTML = "0";
+          cart_sub_total.innerHTML = "0.00";
+        }
+      });
+    });
+  });
+});
+
+prod_detail_close.addEventListener("click", () => {
+  prod_detail_div.style.display = "none";
+  blur_bg.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
+  blur_bg.style.display = "none";
 });

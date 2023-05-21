@@ -7,15 +7,15 @@ export function generate_product_item_component(product_list) {
   product_list.forEach((product) => {
     const product_div = document.createElement("div");
     product_div.classList.add("product");
-    if (product.discount>0){
+    if (product.discount > 0) {
       const bubble_div = document.createElement("div");
       bubble_div.classList.add("bubble");
-      
+
       ////////////////////////////////////DISCOUNT
       const percentage_span = document.createElement("span");
       percentage_span.classList.add("percentage");
       percentage_span.textContent = "-" + product.discount * 100 + "%";
-      
+
       product_div.appendChild(bubble_div);
       bubble_div.appendChild(percentage_span);
     }
@@ -38,6 +38,41 @@ export function generate_product_item_component(product_list) {
     details_span.classList.add("details");
     details_span.textContent = "Details..";
     details_span.addEventListener("click", () => {
+      blur_bg.style.backgroundColor = "#fff7ea"
+      import_api_request().then((api_mod) => {
+        api_mod.Product.get_product_images(product.img_id).then((images) => {
+          console.log(images);
+          let index = 0;
+          prod_detail_img_bg.style.backgroundImage = `url(${cleaned_img_path(images[0].image_path)})`;
+          prod_name.textContent = product.product_name;
+          prod_price.textContent = product.product_price + "birr";
+          prod_descrip.textContent = product.product_description;
+          prod_rating.textContent = `Rating:⭐${product.average_rating}/5`;
+          prev_button_img_nav.addEventListener("click", () => {
+            index-=1;
+            if (index <= 0) {
+              index = 2;
+            }
+            prod_detail_img_bg.style.backgroundImage = `url(${cleaned_img_path(images[index].image_path)})`;
+          });
+
+          next_button_img_nav.addEventListener("click", () => {
+            index += 1;
+            if (index === 3) {
+              index = 0;
+            }
+            prod_detail_img_bg.style.backgroundImage = `url(${cleaned_img_path(images[index].image_path)})`;
+          });
+
+          api_mod.Product.get_seller_contact(product.product_class_id).then(
+            (info) => {
+              seller_email_link.setAttribute("href", `mailto:${info[0].email}`);
+              seller_email_link.textContent = info[0].email;
+            }
+          );
+        });
+      });
+      prod_detail_div.style.display = "grid";
       blur_bg.style.display = "flex";
       expand_div.style.display = "none";
     });
@@ -141,13 +176,12 @@ export function generate_product_item_component(product_list) {
     name_span.classList.add("name");
     name_span.textContent = `${product.product_name} - `;
 
-
     const disc_span = document.createElement("span");
     disc_span.classList.add("disc");
     disc_span.textContent = product.product_price + "birr";
-    
-    if (product.discount<=0){
-      disc_span.style.color = "white"
+
+    if (product.discount <= 0) {
+      disc_span.style.color = "white";
     }
 
     name_span.appendChild(disc_span);
@@ -189,127 +223,132 @@ export function generate_product_item_component(product_list) {
 
 export function generate_cart_item_component(cart_list) {
   cart_list.forEach((cart_item) => {
-    if (cart_item.show === true){
-    const cart_item_div = document.createElement("div");
-    cart_item_div.classList.add("cart_item");
+    if (cart_item.show === true) {
+      const cart_item_div = document.createElement("div");
+      cart_item_div.classList.add("cart_item");
 
-    const cart_item_img_div = document.createElement("div");
-    cart_item_img_div.classList.add("cart_img_part");
+      const cart_item_img_div = document.createElement("div");
+      cart_item_img_div.classList.add("cart_img_part");
 
-    const cart_item_img = document.createElement("img");
-    cart_item_img.classList.add("cart_item_img");
-    cart_item_img.src = cleaned_img_path(cart_item.image_path);
+      const cart_item_img = document.createElement("img");
+      cart_item_img.classList.add("cart_item_img");
+      cart_item_img.src = cleaned_img_path(cart_item.image_path);
 
-    cart_item_div.append(cart_item_img_div);
-    cart_item_img_div.append(cart_item_img);
+      cart_item_div.append(cart_item_img_div);
+      cart_item_img_div.append(cart_item_img);
 
-    const in_cart_amnt_div = document.createElement("div");
-    in_cart_amnt_div.classList.add("in_cart_amount_div");
-    cart_item_div.append(in_cart_amnt_div);
+      const in_cart_amnt_div = document.createElement("div");
+      in_cart_amnt_div.classList.add("in_cart_amount_div");
+      cart_item_div.append(in_cart_amnt_div);
+      /////////////////////////CART ITEM NAME///////////////////////////
+      const in_cart_name = document.createElement("span");
+      in_cart_name.classList.add("in_cart_name");
+      in_cart_name.textContent = cart_item.product_name;
 
-    /////////////////////////CART ITEM NAME///////////////////////////
-    const in_cart_name = document.createElement("span");
-    in_cart_name.classList.add("in_cart_name");
-    in_cart_name.textContent = cart_item.product_name;
+      in_cart_amnt_div.append(in_cart_name);
 
-    in_cart_amnt_div.append(in_cart_name);
+      /////////////////////////CART AMOUNT///////////////////////////
+      const in_cart_amnt_value = document.createElement("span");
+      in_cart_amnt_value.classList.add("in_cart_amount_span");
+      in_cart_amnt_value.textContent = cart_item.units;
 
-    /////////////////////////CART AMOUNT///////////////////////////
-    const in_cart_amnt_value = document.createElement("span");
-    in_cart_amnt_value.classList.add("in_cart_amount_span");
-    in_cart_amnt_value.textContent = cart_item.units;
+      in_cart_amnt_div.append(in_cart_amnt_value);
 
-    in_cart_amnt_div.append(in_cart_amnt_value);
+      const incr_div = document.createElement("div");
+      incr_div.classList.add("incr_div");
+      const plus_button = document.createElement("button");
+      plus_button.classList.add("incr_in_cart");
+      plus_button.title = "more";
 
-    const incr_div = document.createElement("div");
-    incr_div.classList.add("incr_div");
-    const plus_button = document.createElement("button");
-    plus_button.classList.add("incr_in_cart");
-    plus_button.title = "more";
+      const plus_img = document.createElement("img");
+      plus_img.src = "../buyer_home_page/components/comp_images/plus.png";
+      plus_button.append(plus_img);
+      incr_div.append(plus_button);
+      cart_item_div.append(incr_div);
 
-    const plus_img = document.createElement("img");
-    plus_img.src = "../buyer_home_page/components/comp_images/plus.png";
-    plus_button.append(plus_img);
-    incr_div.append(plus_button);
-    cart_item_div.append(incr_div);
+      const decr_div = document.createElement("div");
+      decr_div.classList.add("decr_div");
+      const minus_button = document.createElement("button");
+      minus_button.classList.add("decr_in_cart");
+      minus_button.title = "less";
 
-    const decr_div = document.createElement("div");
-    decr_div.classList.add("decr_div");
-    const minus_button = document.createElement("button");
-    minus_button.classList.add("decr_in_cart");
-    minus_button.title = "less";
+      const minus_img = document.createElement("img");
+      minus_img.src =
+        "../buyer_home_page/components/comp_images/minus-button.png";
+      minus_button.append(minus_img);
+      decr_div.append(minus_button);
+      cart_item_div.append(decr_div);
 
-    const minus_img = document.createElement("img");
-    minus_img.src =
-      "../buyer_home_page/components/comp_images/minus-button.png";
-    minus_button.append(minus_img);
-    decr_div.append(minus_button);
-    cart_item_div.append(decr_div);
+      const remove_div = document.createElement("div");
+      remove_div.classList.add("rm_div");
+      const remove_button = document.createElement("button");
+      remove_button.classList.add("rm_i_button");
+      remove_button.title = "remove";
 
-    const remove_div = document.createElement("div");
-    remove_div.classList.add("rm_div");
-    const remove_button = document.createElement("button");
-    remove_button.classList.add("rm_i_button");
-    remove_button.title = "remove";
+      const remove_img = document.createElement("img");
+      remove_img.src = "../buyer_home_page/components/comp_images/delete.png";
+      remove_button.append(remove_img);
+      remove_div.append(remove_button);
+      cart_item_div.append(remove_div);
 
-    const remove_img = document.createElement("img");
-    remove_img.src = "../buyer_home_page/components/comp_images/delete.png";
-    remove_button.append(remove_img);
-    remove_div.append(remove_button);
-    cart_item_div.append(remove_div);
-
-    ///////////////////////PLUS BUTTON EVENT/////////////////
-    plus_button.addEventListener("click", () => {
-      if (cart_item.units < cart_item.product_units) {
-        cart_item.units += 1;
-        in_cart_amnt_value.innerHTML = cart_item.units;
-        cart_sub_total.innerHTML = cart_list.reduce(
-          (acc, { product_price, units }) =>
-            acc + parseInt(product_price) * parseInt(units),
-          0
-        );
-      }
-    });
-
-    //////////////////MINUS BUTTON AMOUNT/////////////
-    minus_button.addEventListener("click", () => {
-      if (cart_item.units > 1) {
-        cart_item.units -= 1;
-        in_cart_amnt_value.innerHTML = cart_item.units;
-        cart_sub_total.innerHTML = cart_list.reduce(
-          (acc, { product_price, units }) =>
-            acc + parseInt(product_price) * parseInt(units),
-          0
-        );
-      }
-    });
-
-    ///////////////REMOVE CART ITEM CLICK/////////////////
-    remove_button.addEventListener("click", () => {
-      var new_cart_amount = parseInt(cart_units_value.textContent) - 1;
-      cart_units_value.textContent = new_cart_amount;
-      import_api_request().then((api_mod) => {
-        api_mod.Buyer.current_user().then((user) => {
-          api_mod.CartExtras.delete_cart_item(
-            cart_item.product_c_id,
-            user[0].login_id
-          );
-        });
-        var new_cart = api_mod.CartExtras.cart_items.filter(
-          (item) => item.product_c_id != cart_item.product_c_id
-        );
-        api_mod.CartExtras.cart_items = [...new_cart];
-        cart_list = [...new_cart];
-        cart_sub_total.innerHTML = cart_list.reduce(
-          (acc, { product_price, units }) =>
-            acc + parseInt(product_price) * parseInt(units),
-          0
-        );
+      ///////////////////////PLUS BUTTON EVENT/////////////////
+      plus_button.addEventListener("click", () => {
+        if (cart_item.units < cart_item.product_units) {
+          cart_item.units += 1;
+          in_cart_amnt_value.innerHTML = cart_item.units;
+          cart_sub_total.innerHTML = cart_list
+            .reduce(
+              (acc, { product_price, units }) =>
+                acc + parseFloat(product_price) * parseInt(units),
+              0
+            )
+            .toFixed(2);
+        }
       });
-      cart_item_div.style.display = "none";
-    });
 
-    expand_items.append(cart_item_div);
-  }
+      //////////////////MINUS BUTTON AMOUNT/////////////
+      minus_button.addEventListener("click", () => {
+        if (cart_item.units > 1) {
+          cart_item.units -= 1;
+          in_cart_amnt_value.innerHTML = cart_item.units;
+          cart_sub_total.innerHTML = cart_list
+            .reduce(
+              (acc, { product_price, units }) =>
+                acc + parseFloat(product_price) * parseInt(units),
+              0
+            )
+            .toFixed(2);
+        }
+      });
+
+      ///////////////REMOVE CART ITEM CLICK/////////////////
+      remove_button.addEventListener("click", () => {
+        var new_cart_amount = parseInt(cart_units_value.textContent) - 1;
+        cart_units_value.textContent = new_cart_amount;
+        import_api_request().then((api_mod) => {
+          api_mod.Buyer.current_user().then((user) => {
+            api_mod.CartExtras.delete_cart_item(
+              cart_item.product_c_id,
+              user[0].login_id
+            );
+          });
+          var new_cart = api_mod.CartExtras.cart_items.filter(
+            (item) => item.product_c_id != cart_item.product_c_id
+          );
+          api_mod.CartExtras.cart_items = [...new_cart];
+          cart_list = [...new_cart];
+          cart_sub_total.innerHTML = cart_list
+            .reduce(
+              (acc, { product_price, units }) =>
+                acc + parseFloat(product_price) * parseInt(units),
+              0
+            )
+            .toFixed(2);
+        });
+        cart_item_div.style.display = "none";
+      });
+      cart_item_div.style.width = "85%";
+      expand_items.append(cart_item_div);
+    }
   });
 }

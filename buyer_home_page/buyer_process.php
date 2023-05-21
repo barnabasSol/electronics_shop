@@ -56,9 +56,35 @@ final class Buyer
         }
     }
 
+    public function search_product($by_name)
+    {
+        if (!$this->con) {
+            return "db_error";
+        }
+        $search_string = '%' . $by_name . '%';
+        $stmt = $this->con->prepare("SELECT *, image_path FROM product_class pc JOIN product_images ON img_id = image_id WHERE image_type = 1 AND product_name LIKE ?");
+        $stmt->bind_param("s", $search_string);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        mysqli_stmt_close($stmt);
+        return json_encode($result);
+    }
+
+    public function get_seller_contact($prod_id)
+    {
+        if (!$this->con) {
+            return "db_error";
+        }
+        $stmt = $this->con->prepare("SELECT email, phone FROM product_class JOIN users ON seller_id=login_id WHERE product_class_id=? LIMIT 1");
+        $stmt->bind_param("s", $prod_id);
+        $result = $stmt->execute() ? $stmt->get_result()->fetch_all(MYSQLI_ASSOC) : "failed";
+        mysqli_stmt_close($stmt);
+        return $result;
+    }
+
     public function cart_item_exists($product_id, $buyer_id)
     {
-        if ($this->con->connect_errno) {
+        if (!$this->con) {
             return false;
         } else {
             $trimmed = trim($product_id);
@@ -108,35 +134,93 @@ final class Buyer
         if (!$this->con) {
             echo "db_error";
         } else {
-                $stmt = $this->con->prepare("DELETE from cart where product_c_id = ? AND buyer_id = ?");
-                $stmt->bind_param("ss", $product_id, $current_user);
-                $status = $stmt->execute() ? "success" : "failed";
-                return $status;
+            $stmt = $this->con->prepare("DELETE from cart where product_c_id = ? AND buyer_id = ?");
+            $stmt->bind_param("ss", $product_id, $current_user);
+            $status = $stmt->execute() ? "success" : "failed";
+            return $status;
         }
     }
 
-
-    public function update_cart($cart_items, $current_user) {
+    public function check_notification($current_user)
+    {
         if (!$this->con) {
-          echo "db_error";
+            return "db_error";
+        }
+        $stmt = $this->con->prepare("SELECT prod_c_id, seller_confirmation FROM pending_orders WHERE buyer_id=?");
+        $stmt->bind_param("s", $current_user);
+        $result = $stmt->execute() ? $stmt->get_result()->fetch_all(MYSQLI_ASSOC) : "failed";
+        mysqli_stmt_close($stmt);
+        return $result;
+    }
+
+    public function get_product_images($prod_img_id)
+    {
+        if (!$this->con) {
+            return "db_error";
+        }
+        $stmt = $this->con->prepare("SELECT image_path FROM product_images WHERE image_id=?");
+        $stmt->bind_param("s", $prod_img_id);
+        $result = $stmt->execute() ? $stmt->get_result()->fetch_all(MYSQLI_ASSOC) : "failed";
+        return $result;
+    }
+
+    public function make_order($ordered_items)
+    {
+        if (!$this->con) {
+            echo "db_error";
         }
         try {
-          $this->con->begin_transaction();
-      
-          foreach ($cart_items as $value) {
-            $stmt = $this->con->prepare("UPDATE cart SET units = ? WHERE buyer_id = ? AND product_c_id = ?");
-            $stmt->bind_param("sss", $value['units'], $current_user, $value['product_c_id']);
-            $stmt->execute();
-          }
-          
-          $this->con->commit();
-          $status = "success";
+            $this->con->begin_transaction();
+            $this->clear_cart_content($ordered_items[0]["buyer_id"]);
+            foreach ($ordered_items as $value) {
+                $stmt = $this->con->prepare("INSERT INTO pending_orders(buyer_id, prod_c_id, units) values (?, ?, ?)");
+                $stmt->bind_param("sss", $value["buyer_id"], $value["product_c_id"], $value["units"]);
+                $stmt->execute();
+            }
+
+            $this->con->commit();
+            $status = "success";
         } catch (Exception $e) {
-          $this->con->rollback();
-          $status = "failed: " . $e->getMessage();
+            $this->con->rollback();
+            $status = "failed: " . $e->getMessage();
         }
-        echo $status;
-      }
+        return $status;
+    }
+
+
+    public function update_cart($current_user, $cart_content)
+    {
+        if (!$this->con) {
+            echo "db_error";
+        }
+        try {
+            $this->con->begin_transaction();
+
+            foreach ($cart_content as $value) {
+                $stmt = $this->con->prepare("UPDATE cart SET units = ? WHERE buyer_id = ? AND product_c_id = ?");
+                $stmt->bind_param("sss", $value["units"], $current_user, $value["product_c_id"]);
+                $stmt->execute();
+            }
+
+            $this->con->commit();
+            $status = "success";
+        } catch (Exception $e) {
+            $this->con->rollback();
+            $status = "failed: " . $e->getMessage();
+        }
+        return $status;
+    }
+
+    public function clear_cart_content($current_user)
+    {
+        if (!$this->con) {
+            return "db_error";
+        }
+        $stmt = $this->con->prepare("DELETE FROM cart WHERE buyer_id = ?");
+        $stmt->bind_param("s", $current_user);
+        $status = $stmt->execute() ? "success" : "failed";
+        return $status;
+    }
 }
 
 
@@ -148,7 +232,23 @@ final class RequestHandler_bp
     public static function handle()
     {
         $buyer = new Buyer();
-        if (isset($_GET['cat_value'])) {
+
+
+        ///////////////////////////////////////////MAKE ORDER/////////////////////////////
+        if (isset($_POST["function"]) && $_POST["function"] === "make_order") {
+            if (isset($_POST["ordered_items"])) {
+                $ordered_items_assos = json_decode($_POST["ordered_items"], true);
+                $result = $buyer->make_order($ordered_items_assos);
+                echo $result;
+            } else {
+                http_response_code(400);
+                echo "Invalid or missing parameters";
+            }
+        }
+        //////////////////////////////////////searching product//////////////////////////////////////
+        else if (isset($_GET['function'], $_GET['search_string_param']) && $_GET['function'] == "search_product") {
+            echo $buyer->search_product(htmlspecialchars($_GET['search_string_param']));
+        } else if (isset($_GET['cat_value'])) {
             echo $buyer->get_products(htmlspecialchars($_GET['cat_value']));
         } else if (isset($_GET['function']) && isset($_GET['current_user_id'])) {
             if ($_GET['function'] === 'get_cart_items') {
@@ -159,26 +259,48 @@ final class RequestHandler_bp
                 $buyer->insert_in_cart(htmlspecialchars($_POST['buyer_id']), htmlspecialchars($_POST['product_id']), htmlspecialchars($_POST['units']));
             }
         }
-        /////////////////REQUEST TO DELETE A CART ITEM//////////////////
+        /////////////////REQUEST TO DELETE//////////////////
         else if ($_SERVER["REQUEST_METHOD"] === "DELETE") {
-            // Read the request body as a JSON string
             $json = file_get_contents("php://input");
-          
             $data = json_decode($json, true);
-          
-            if (isset($data["action"]) && $data["action"] === "delete_from_cart") {
-              $product_id = $data["product_id"];
-              $current_user = $data["current_user"];
-          
-              $result = $buyer->delete_cart_item($product_id, $current_user);
-          
-              header("Content-Type: application/json");
-              echo json_encode(["status" => $result]);
+            if (isset($data["action"], $data["current_user"])) {
+                if ($data["action"] == "delete_cart_content") {
+                    $result = $buyer->clear_cart_content($data["current_user"]);
+                    echo json_encode(["result" => $result]);
+                } else if ($data["action"] == "delete_from_cart" && isset($data["product_id"])) {
+                    $result = $buyer->delete_cart_item($data["product_id"], $data["current_user"]);
+                    echo json_encode(["status" => $result]);
+                } else {
+                    http_response_code(400);
+                    echo "Invalid or missing parameters";
+                }
             } else {
-              header("HTTP/1.1 400 Bad Request");
-              echo "Invalid or missing action parameter";
+                http_response_code(400);
+                echo "Invalid or missing parameters";
             }
-          }
+        }
+        ////////////////////////REQUEST TO UPDATE CART CONTENT////////////
+        else if ($_SERVER["REQUEST_METHOD"] === "PUT") {
+            $json = file_get_contents("php://input");
+            $data = json_decode($json, true);
+
+            if (isset($data["action"], $data["current_user"], $data["cart_items"]) && $data["action"] === "update_cart_content") {
+                $result = $buyer->update_cart($data["current_user"], $data["cart_items"]);
+                header("Content-Type: application/json");
+                echo json_encode(["status" => $result]);
+            } else {
+                http_response_code(400);
+                echo "Invalid or missing parameters";
+            }
+        } else if (isset($_GET["function"]) && $_GET["function"] === "get_product_images") {
+            if (isset($_GET["prod_img_id"])) {
+                echo json_encode($buyer->get_product_images($_GET["prod_img_id"]));
+            }
+        }else if (isset($_GET["function"]) && $_GET["function"] === "seller_contact") {
+            if (isset($_GET["product_id"])) {
+                echo json_encode($buyer->get_seller_contact($_GET["product_id"]));
+            }
+        }
     }
 }
 

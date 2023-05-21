@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="buyer_home.css" />
+    <link rel="stylesheet" href="product_detail.css" />
     <link rel="stylesheet" href="components/product_item/product_item.css" />
     <link rel="stylesheet" href="components/cart_item/cart_item.css" />
     <meta charset="UTF-8" />
@@ -13,11 +14,36 @@
   <body>
     <div class="wrapper">
       <div id="blur">
+        <div id="prod_detail_div">
+          <div class="prod_images_div"></div>
+          <nav class="img_nav">
+            <button>previous</button>
+            <button>next</button>
+          </nav>
+          <header class="prod_header">
+            <img src="../assets/close.png" alt="">
+          </header>
+          <div class="name_price_rating">
+           <span id="prod_name_detail">Mac</span>
+           <span id="prod_price_detail">200.00 birr</span>
+           <span id="prod_rating_detail">Rating: 5/5⭐</span>
+          </div>
+          <div class="prod_description">
+            <span id="prod_descrip_detail">
+            </span>
+          </div>
+          <footer class="prod_seller_info">
+            <span>seller:</span> 
+            <a class="email_link" href="" target="_blank"></a>
+            <span id="seller_number">0974276534</span>
+          </footer>
+        </div>
+
         <div id="expand_div">
           <div id="exp_title">Cart Items</div>
           <div id="exp_search_div">
             <input
-              type="text"
+              type="search"
               id="exp_search_input"
               placeholder="search cart"
             />
@@ -34,49 +60,67 @@
         </div>
       </div>
       <aside>
-        <div class="title">
-         
-        </div>
+        <div class="title"></div>
         <div class="exit">
           <button>
             <img src="images/close.png" alt="" />
           </button>
         </div>
-
         <div id="info">
+          <img src="../assets/userblack.png" alt="" />
           <span class="full_name"></span>
           <span class="login_id"></span>
         </div>
-        
-        <form class="options" action="buyer_process.php" method="GET">
+
+        <div class="options">
           <button class="opts" type="submit" name="setting_opt" value="profile">
+            <img src="../assets/resume.png" alt="" />
             Profile
           </button>
           <button class="opts" type="submit" name="setting_opt" value="pending">
+            <img src="../assets/box.png" alt="" />
             Pending
+            <div class="pending_amnt">
+              <span>8</span>
+            </div>
           </button>
-          <button class="opts" type="submit" name="setting_opt" value="notification">
+          <button
+            class="opts"
+            type="submit"
+            name="setting_opt"
+            value="notification"
+          >
+            <img src="../assets/notification.png" alt="" />
             Notifiations
+            <div class="pos_notif_amnt">
+              <span>8</span>
+            </div>
+            <div class="neg_notif_amnt">
+              <span>8</span>
+            </div>
           </button>
           <button class="opts" type="submit" name="setting_opt" value="history">
+            <img src="../assets/history.png" alt="" />
             History
           </button>
-        </form>
+        </div>
         <div class="logout_div">
           <button class="opts" type="submit" name="setting_opt" value="logout">
+            <img src="../assets/logout.png" alt="" />
             Logout
           </button>
         </div>
       </aside>
       <header class="left_tab">
+        <div id="signal"></div>
         <button class="left_tab_btn">
           <img src="images/navigation.png" alt="" />
         </button>
       </header>
-      <form class="search_div" action="buyer_process.php" method="GET">
+      <div class="search_div">
         <img src="../assets/search_icon.png" alt="" />
         <input type="search" name="search_value" id="search" />
-      </form>
+      </div>
       <header class="logo">
         <img src="images/gadgets.png" alt="logo" />
       </header>
@@ -133,6 +177,7 @@
   </body>
 </html>
 <!-- <script src="../jquery/jquery-3.6.4.min.js"></script> -->
+<script src="targeting_elements.js"></script>
 <script src="generate_markup.js"></script>
 <script src="api_request.js"></script>
 <script src="buyer_home.js"></script>

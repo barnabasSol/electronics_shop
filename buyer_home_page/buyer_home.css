@@ -4,7 +4,8 @@ body,
 html {
   margin: 0;
   padding: 0;
-  font-family:"Roboto", 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif !important;
+  font-family: "Roboto", "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif !important;
 }
 
 .title {
@@ -18,7 +19,7 @@ html {
   color: black;
 }
 
-.title span{
+.title span {
   display: none;
 }
 
@@ -28,9 +29,7 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  display: none;
   transition: opacity 0.5s;
-  opacity: 0;
 }
 
 .exit button img {
@@ -46,15 +45,20 @@ html {
   justify-content: center;
   align-items: center;
   border: none;
+  display: none;
 }
 
 .options {
   grid-area: options;
   background-color: #fff7ea;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  gap: 10%;
 }
 
 .logout_div {
-  border-top: 1px solid black;
   grid-area: logout_div;
   background-color: #fff7ea;
   display: flex;
@@ -62,22 +66,18 @@ html {
   align-items: center;
 }
 
-
-
 #info {
-  height: 70px;
-  width: 100%;
-  position: absolute;
   bottom: 75%;
-  z-index: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #fff7ea;
+  width: 100%;
   grid-area: info;
 }
 
-#info img{
+#info img {
   height: 50px;
 }
 
@@ -92,18 +92,64 @@ aside {
   position: absolute;
   width: 0%;
   height: 100%;
-  background-color: #f0bf8a;
+  background-color: #fff7ea;
   transition: width 0.7s, opacity 0.8s;
   display: grid;
-  grid-template-rows: 0.89fr 10fr 1fr;
+  grid-template-rows: 1.2fr 3.1fr 10fr 1fr;
   grid-template-columns: 4fr 1fr;
   grid-template-areas:
     "title exit"
+    "info info"
     "options options"
     "logout_div logout_div";
 }
 
+.pending_amnt,
+.pos_notif_amnt,
+.neg_notif_amnt {
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  position: absolute;
+  left: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+
+.pending_amnt{
+  background-color: rebeccapurple;
+}
+.pos_notif_amnt{
+  background-color: rgb(9, 190, 9);
+  left: 80%;
+}
+.neg_notif_amnt{
+  background-color: red;
+  left: 90%;
+}
+
+.pending_amnt span {
+  color: white;
+}
+.pos_notif_amnt span{
+  color: white;
+}
+.neg_notif_amnt span{
+  color: white;
+}
+
+#signal {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background-color: red;
+  position: absolute;
+  left: 37%;
+  bottom: 50%;
+  display: none;
+}
 
 .left_tab {
   background-color: #f0bf8a;
@@ -111,6 +157,7 @@ aside {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  position: relative;
 }
 .left_tab button {
   margin-left: 10%;
@@ -126,20 +173,30 @@ aside {
   height: 2.3rem;
 }
 
-.options {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 10%;
-}
-
 .opts {
+  position: relative;
   display: none;
-  width: 200px;
+  width: 80%;
   height: 40px;
   opacity: 0;
   transition: opacity 0.5s;
+  border: none;
+  background-color: #f3e6d9;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+.opts:hover {
+  cursor: pointer;
+  opacity: 0;
+  background-color: #e0d2c4;
+}
+
+.opts img {
+  height: 100%;
+  margin-right: 5%;
 }
 .logout {
   display: none;
@@ -155,7 +212,7 @@ aside {
   position: relative;
 }
 
-.search_div img{
+.search_div img {
   height: 30px;
   /* position: absolute;
   right: 82%; */
@@ -169,10 +226,8 @@ aside {
   border: none;
 }
 
-
 .sort_div {
   width: 9%;
-
 }
 #sort_by {
   text-align: center;
@@ -198,7 +253,6 @@ aside {
   width: 50px;
 }
 
-
 .search_btn_div {
   grid-area: search_btn_div;
   background-color: #ffc300;
@@ -223,7 +277,7 @@ aside {
   font-weight: 10;
   color: black;
   border: none;
-  border-bottom: 2px solid black; 
+  border-bottom: 2px solid black;
   font-size: 1rem;
 }
 
@@ -236,7 +290,7 @@ aside {
   background-color: #fff7ea;
 }
 
-#empty_msg{
+#empty_msg {
   display: none;
   font-size: larger;
   color: red;
@@ -275,12 +329,12 @@ aside {
   position: relative;
   transition: scale 0.5s;
 }
-.right_space button:hover{
+.right_space button:hover {
   scale: 1.13;
   cursor: pointer;
 }
 
-.right_space button:active{
+.right_space button:active {
   scale: 0.9;
 }
 
@@ -289,14 +343,11 @@ aside {
   height: 5.1rem;
 }
 
-
-
-#cart_units{
+#cart_units {
   height: 25px;
   width: 25px;
   border-radius: 50%;
   background-color: red;
-  color: white;
   position: absolute;
   z-index: 2;
   bottom: 70%;
@@ -310,12 +361,12 @@ aside {
   /* display: none; */
 }
 
-#cart_units span{
+#cart_units span {
   color: white;
   font-size: 13px;
 }
 
-#blur{
+#blur {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -327,7 +378,7 @@ aside {
   display: none;
 }
 
-#exp_title{
+#exp_title {
   grid-area: exptitle;
   display: flex;
   justify-content: center;
@@ -340,21 +391,22 @@ aside {
   display: none;
 }
 
-#exp_search_div{
+#exp_search_div {
   grid-area: searchexp;
   display: flex;
   justify-content: center;
   align-items: flex-end;
 }
 
-#exp_search_div input{
+#exp_search_div input {
   width: 80%;
-  border: none;
-  border-bottom: 2px solid silver;
+  border: 2px solid silver;
   margin-bottom: 1.3%;
   font-size: 14px;
   padding: 7px 0;
-  transition: all 0.3s ease;
+  transition: border 0.3s ease;
+  border-radius: 5px;
+  padding-left: 2%;
 }
 
 #exp_search_input::placeholder {
@@ -366,28 +418,26 @@ aside {
   color: #666;
 }
 
-#exp_search_div input:focus{
+#exp_search_div input:focus {
   outline: none;
-  border-bottom: 2px solid rebeccapurple;
-  box-shadow: 0 1px 0px rebeccapurple;
+  border: 2px solid rebeccapurple;
 }
 
-
-#close_exp{
+#close_exp {
   grid-area: closeexp;
   display: flex;
-  justify-content:flex-end;
+  justify-content: flex-end;
   align-items: center;
 }
 
-#close_exp img{
+#close_exp img {
   height: 35px;
   width: 35px;
   margin-top: 4%;
   margin-right: 20%;
 }
 
-#exp_items{
+#exp_items {
   grid-area: expitems;
   display: flex;
   flex-direction: column;
@@ -396,25 +446,32 @@ aside {
   overflow: scroll;
 }
 
-#exp_buttons_div{
+#exp_buttons_div {
   grid-area: expbuttons;
   border-bottom-left-radius: 14px;
   display: flex;
   justify-content: center;
   align-items: center;
-  
 }
 
-#exp_buttons_div button{
+#exp_buttons_div button {
   height: 50px;
   width: 160px;
   border: none;
   border-radius: 10px;
   font-size: 15px;
   color: white;
+  transition: scale 0.5s;
 }
 
-#exp_clear_cart{
+#exp_buttons_div button:active {
+  scale: 0.8;
+}
+#exp_buttons_div button:hover {
+  cursor: pointer;
+}
+
+#exp_clear_cart {
   background-color: red;
   display: flex;
   align-items: center;
@@ -423,12 +480,12 @@ aside {
   margin-left: 17%;
 }
 
-#exp_proceed{
+#exp_proceed {
   background-color: rgb(9, 190, 9);
   margin-left: 10%;
 }
 
-#sub_total_div{
+#sub_total_div {
   grid-area: exptots;
   display: flex;
   flex-direction: column;
@@ -441,27 +498,23 @@ aside {
   border-top-left-radius: 14px;
 }
 
-#sum_tot_value{
+#sum_tot_value {
   color: white;
 }
 
-
-
-#expand_div{
+#expand_div {
   height: 80%;
-  width: 70%;
+  width: 57%;
   background-color: white;
   border-radius: 15px;
   display: grid;
   grid-template-rows: 1.3fr 7fr 1.4fr;
-  grid-template-columns: 1.1fr 7fr 1fr 1fr 1.2fr; 
-  grid-template-areas: 
-  "exptitle searchexp searchexp searchexp closeexp"
-  "expitems expitems expitems expitems expitems" 
-  "expbuttons expbuttons expbuttons exptots exptots"; 
+  grid-template-columns: 1.1fr 7fr 1fr 1fr 1.2fr;
+  grid-template-areas:
+    "exptitle searchexp searchexp searchexp closeexp"
+    "expitems expitems expitems expitems expitems"
+    "expbuttons expbuttons expbuttons exptots exptots";
 }
-
-
 
 .wrapper {
   position: relative;

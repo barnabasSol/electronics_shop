@@ -96,7 +96,7 @@ class User
 
     public function email_phone_exists($email, $phone)
     {
-        if ($this->con->connect_error) {
+        if (!$this->con) {
             return "error";
         } else {
             $query_phone = "SELECT phone FROM users WHERE phone=?";
