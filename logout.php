@@ -1,15 +1,21 @@
 <?php
-// Start the session
 session_start();
 
-// Unset the session variables
-unset($_SESSION['login_id']);
+if (isset($_SESSION['email'])) {
+    unset($_SESSION['email']);
+    $_SESSION = [];
+    session_destroy();
+} elseif (isset($_SESSION['phone'])) {
+    unset($_SESSION['phone']);
+    $_SESSION = [];
+    session_destroy();
+} else {
+    unset($_SESSION['login_id']);
+    $_SESSION = array();
+    session_destroy();
+}
 
-// Destroy the session
-session_destroy();
-session_regenerate_id(true);
-
-// Redirect the user to the logout page
-header('Location: index.html');
+// Send a JSON response indicating success
+echo json_encode(array('success' => true));
 exit;
 ?>
