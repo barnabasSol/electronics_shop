@@ -11,11 +11,11 @@ if (isset($_SESSION['email'])) {
     session_destroy();
 } else {
     unset($_SESSION['login_id']);
-    $_SESSION = array();
+    $_SESSION = [];
     session_destroy();
 }
 
-// Send a JSON response indicating success
+header('Location: index.html');
 echo json_encode(array('success' => true));
 exit;
 ?>
