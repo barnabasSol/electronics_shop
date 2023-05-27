@@ -26,6 +26,9 @@ window.addEventListener("load", function () {
 
   import_api_request().then((mod) => {
     mod.Buyer.current_user().then((user) => {
+      mod.Buyer.get_pending_orders(user[0].login_id).then((orders) => {
+        orders_amount.textContent = orders.length;
+      });
       mod.Cart.get_cart_items(user[0].login_id).then((items) => {
         if (items.length != 0) {
           cart_units.style.display = "flex";
@@ -56,14 +59,13 @@ search_product.addEventListener("keydown", function (e) {
     cat_butns[0].style.color = "purple";
     cat_butns[0].style.borderColor = "purple";
     import_api_request().then((api_mod) => {
-      console.log(
-        api_mod.Product.search_products(search_product.value).then(
-          (searched_products) => {
-            import_generate_markups().then((mk_mod) => {
-              mk_mod.generate_product_item_component(searched_products);
-            });
-          }
-        )
+      api_mod.Product.search_products(search_product.value).then(
+        (searched_products) => {
+          console.log(searched_products);
+          import_generate_markups().then((mk_mod) => {
+            mk_mod.generate_product_item_component(searched_products);
+          });
+        }
       );
     });
   }
@@ -72,13 +74,45 @@ search_product.addEventListener("keydown", function (e) {
 /////////////////////////////SORTING OPTION/////////////////////////////
 sort_selected.addEventListener("change", (event) => {
   const selected_option = event.target.value;
-  console.log(selected_option);
+  import_api_request().then((api_mod) => {
+    import_generate_markups().then((mk_mod) => {
+      switch (selected_option) {
+        case "affordable":
+          products_div_parent.innerHTML = "";
+          api_mod.Product.sort_products(selected_option).then((sorted) => {
+            mk_mod.generate_product_item_component(sorted);
+          });
+          break;
+        case "expensive":
+          products_div_parent.innerHTML = "";
+          api_mod.Product.sort_products(selected_option).then((sorted) => {
+            mk_mod.generate_product_item_component(sorted);
+          });
+          break;
+        case "rating":
+          products_div_parent.innerHTML = "";
+          api_mod.Product.sort_products(selected_option).then((sorted) => {
+            mk_mod.generate_product_item_component(sorted);
+          });
+          break;
+        case "seller_reputation":
+          products_div_parent.innerHTML = "";
+          api_mod.Product.sort_products(selected_option).then((sorted) => {
+            mk_mod.generate_product_item_component(sorted);
+          });
+          break;
+        default:
+          break;
+      }
+    });
+  });
 });
 
 ////////////////////////////////CLICK CART/////////////////////////////////////
 the_cart.addEventListener("click", () => {
   blur_bg.style.display = "flex";
   expand_div.style.display = "grid";
+  pending_orders.style.display = "none";
   expand_items.innerHTML = "";
   import_api_request().then((api_mod) => {
     api_mod.Buyer.current_user().then((user) => {
@@ -105,6 +139,7 @@ the_cart.addEventListener("click", () => {
 ///////////////////////////////////SEARCH CART/////////////////////////////////
 exp_search_field.addEventListener("input", () => {
   var search_value = exp_search_field.value;
+
   import_api_request().then((api_mod) => {
     expand_items.innerHTML = "";
     import_generate_markups().then((mk_mod) => {
@@ -121,6 +156,8 @@ exp_search_field.addEventListener("input", () => {
 blur_bg.addEventListener("click", (e) => {
   e.stopPropagation();
   blur_bg.style.display = "none";
+  notif_container.style.display = "none";
+  notif_list.innerHTML = ""
   import_api_request().then((api_mod) => {
     api_mod.Buyer.current_user().then((user) => {
       api_mod.Cart.update_cart_content(
@@ -173,8 +210,7 @@ const load_left_tab_content = () => {
 
 left_button.addEventListener("click", load_left_tab_content);
 
-//event to close the side tab
-close_btn.addEventListener("click", () => {
+function close_left_tab() {
   div_side.style.width = "0%";
   setTimeout(() => {
     close_btn_img.style.display = "none";
@@ -188,12 +224,16 @@ close_btn.addEventListener("click", () => {
   opt_buttons.forEach((element) => {
     element.style.opacity = "0";
   });
-});
+}
+//event to close the side tab
+close_btn.addEventListener("click", close_left_tab);
 
 //////////////////////////////////////////////CATAGORY NAVIGATION///////////////////////////////////////////////////////
 cat_butns.forEach((element) => {
   element.addEventListener("click", (e) => {
     e.preventDefault();
+    console.log(element.value);
+    sort_selected.selectedIndex = 0;
     cat_butns.forEach((element) => {
       element.style.borderBottom = "2px solid black";
       element.style.color = "black";
@@ -259,3 +299,82 @@ prod_detail_close.addEventListener("click", () => {
   blur_bg.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
   blur_bg.style.display = "none";
 });
+
+pending_orders.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
+
+clear_all_pending.addEventListener("click", () => {
+  import_api_request().then((api_mod) => {
+    api_mod.Buyer.current_user().then((user) => {
+      api_mod.Buyer.cancel_all_order(user[0].login_id).then((res) => {
+        if (res.status === "success") {
+          pending_orders_container.innerHTML = "";
+        }
+      });
+    });
+  });
+});
+
+pending_button.addEventListener("click", () => {
+  close_left_tab();
+  blur_bg.style.display = "flex";
+  expand_div.style.display = "none";
+  pending_orders_container.innerHTML = ""
+  setTimeout(() => {
+    pending_orders.style.display = "grid";
+    pending_orders.style.transform = "translateY(-100%)";
+  }, 300);
+  setTimeout(() => {
+    import_api_request().then((api_mod) => {
+      api_mod.Buyer.current_user().then((user) => {
+        api_mod.Buyer.get_pending_orders(user[0].login_id).then((data) => {
+          console.log(data);
+          import_generate_markups().then((mk_mod) => {
+            mk_mod.generate_pending_order_component(data);
+          });
+        });
+      });
+    });
+  }, 600);
+});
+
+document.querySelector("#pending_header img").addEventListener("click", () => {
+  blur_bg.style.display = "none";
+  pending_orders.style.display = "none";
+  pending_orders.style.transform = "translateY(468px)";
+});
+
+notif_button.addEventListener("click", () => {
+  close_left_tab();
+  expand_div.style.display = "none";
+  blur_bg.style.display = "flex";
+  pending_orders.style.display = "none";
+  notif_container.style.display = "grid";
+  import_api_request().then((api_mod) => {
+    api_mod.Buyer.current_user().then((user) => {
+      api_mod.Buyer.check_notifications(user[0].login_id).then(
+        (notifictions) => {
+          import_generate_markups().then((mk_mod) => {
+            mk_mod.generate_notification_component(notifictions);
+          });
+        }
+      );
+    });
+  });
+});
+
+
+rating.addEventListener("change", (event) => {
+  import_api_request().then(api_mod=>{
+    api_mod.Product.rating_value = event.target.value
+    console.log(`You rated ${api_mod.Product.rating_value} stars`);
+  })
+});
+
+document.querySelector(".logout_div button").addEventListener("click", ()=>{
+  document.querySelector(".logout_div button").style.backgroundColor = "red"
+  import_api_request().then(api_mod=>{
+    api_mod.Buyer.logout_user()
+  })
+})

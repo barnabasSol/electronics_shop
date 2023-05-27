@@ -1,0 +1,30 @@
+#notif_header{
+    grid-area: nhdr;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#notif_header img{
+    height: 25px;
+}
+
+#notif_main_div{
+    grid-area: nmd;
+    display: flex;
+    flex-direction: column;
+    background-color: whitesmoke;
+}
+
+#notif_list_container{
+    height: 70%;
+    width: 80%;
+    background-color: white;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.5fr 10fr;
+    grid-template-areas:
+    "nhdr"
+    "nmd";
+    display: none;
+
+}

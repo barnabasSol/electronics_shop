@@ -37,23 +37,53 @@ export function generate_product_item_component(product_list) {
     const details_span = document.createElement("span");
     details_span.classList.add("details");
     details_span.textContent = "Details..";
+
+
+
+
+
     details_span.addEventListener("click", () => {
-      blur_bg.style.backgroundColor = "#fff7ea"
+      blur_bg.style.backgroundColor = "#fff7ea";
+      pending_orders.style.display = "none";
+
+
+
+      parent_hist.lastElementChild.addEventListener('click', ()=>{
+        import_api_request().then(api_mod=>{
+          api_mod.Buyer.current_user().then(user=>{
+            var rating = api_mod.Product.rating_value
+            api_mod.Product.add_rating(user[0].login_id, rating, product.product_class_id).then(r=>{
+              console.log(r);
+            })
+          })
+        })
+    })
+
       import_api_request().then((api_mod) => {
         api_mod.Product.get_product_images(product.img_id).then((images) => {
-          console.log(images);
+          api_mod.Product.get_seller_reputation(product.seller_id).then(
+            (rep) => {
+              document.querySelector(
+                "#seller_reputation"
+              ).textContent = `Seller Reputation:⭐${rep[0].reputation}/10`;
+            }
+          );
           let index = 0;
-          prod_detail_img_bg.style.backgroundImage = `url(${cleaned_img_path(images[0].image_path)})`;
+          prod_detail_img_bg.style.backgroundImage = `url(${cleaned_img_path(
+            images[0].image_path
+          )})`;
           prod_name.textContent = product.product_name;
           prod_price.textContent = product.product_price + "birr";
           prod_descrip.textContent = product.product_description;
           prod_rating.textContent = `Rating:⭐${product.average_rating}/5`;
           prev_button_img_nav.addEventListener("click", () => {
-            index-=1;
+            index -= 1;
             if (index <= 0) {
               index = 2;
             }
-            prod_detail_img_bg.style.backgroundImage = `url(${cleaned_img_path(images[index].image_path)})`;
+            prod_detail_img_bg.style.backgroundImage = `url(${cleaned_img_path(
+              images[index].image_path
+            )})`;
           });
 
           next_button_img_nav.addEventListener("click", () => {
@@ -61,13 +91,17 @@ export function generate_product_item_component(product_list) {
             if (index === 3) {
               index = 0;
             }
-            prod_detail_img_bg.style.backgroundImage = `url(${cleaned_img_path(images[index].image_path)})`;
+            prod_detail_img_bg.style.backgroundImage = `url(${cleaned_img_path(
+              images[index].image_path
+            )})`;
           });
 
           api_mod.Product.get_seller_contact(product.product_class_id).then(
             (info) => {
               seller_email_link.setAttribute("href", `mailto:${info[0].email}`);
               seller_email_link.textContent = info[0].email;
+              seller_number_link.setAttribute("href", `tel:${info[0].phone}`);
+              seller_number_link.textContent = info[0].phone;
             }
           );
         });
@@ -352,3 +386,94 @@ export function generate_cart_item_component(cart_list) {
     }
   });
 }
+
+//////////////////////////////PENDING ORDER COMP////////////////////////////////////
+
+export function generate_pending_order_component(order_list) {
+  order_list.forEach((element) => {
+    const conf_item = document.createElement("div");
+    conf_item.classList.add("conf_item");
+
+    const conf_img_part = document.createElement("div");
+    conf_img_part.classList.add("conf_img_part");
+
+    const conf_prod_img = document.createElement("img");
+    conf_prod_img.src = cleaned_img_path(element.image_path);
+    conf_img_part.setAttribute("alt", "the image");
+    conf_prod_img.classList.add("conf_prod_img");
+
+    conf_img_part.appendChild(conf_prod_img);
+
+    const in_conf_info_div = document.createElement("div");
+    in_conf_info_div.classList.add("in_conf_info_div");
+
+    const in_pending_orders_name = document.createElement("span");
+    in_pending_orders_name.classList.add("in_pending_orders_name");
+    in_pending_orders_name.textContent = element.product_name;
+
+    const in_pending_orders_amount = document.createElement("span");
+    in_pending_orders_amount.classList.add("in_pending_orders_amount");
+    in_pending_orders_amount.textContent = element.units;
+
+    in_conf_info_div.appendChild(in_pending_orders_name);
+    in_conf_info_div.appendChild(in_pending_orders_amount);
+
+    const cancel_pending_btn_div = document.createElement("div");
+    cancel_pending_btn_div.classList.add("cancel_pending_btn_div");
+
+    const cancel_pending_btn = document.createElement("button");
+    cancel_pending_btn.classList.add("cancel_pending_btn");
+    cancel_pending_btn.textContent = "cancel";
+
+    cancel_pending_btn_div.appendChild(cancel_pending_btn);
+
+    conf_item.appendChild(conf_img_part);
+    conf_item.appendChild(in_conf_info_div);
+    conf_item.appendChild(cancel_pending_btn_div);
+    conf_item.style.width = "90%";
+
+    cancel_pending_btn.addEventListener("click", () => {
+      import_api_request().then((api_mod) => {
+        api_mod.Buyer.current_user().then((user) => {
+          api_mod.Buyer.cancel_order(element.prod_c_id, user[0].login_id).then(
+            (res) => {
+              if (res.status === "success") {
+                conf_item.style.display = "none";
+              }
+            }
+          );
+        });
+      });
+    });
+
+    pending_orders_container.appendChild(conf_item);
+  });
+}
+
+/////////////////////////////NOTIFICATION COMPONENT/////////////////////////////
+
+export function generate_notification_component(notification_list) {
+  notification_list.forEach((notif) => {
+    if (notif.seller_confirmation != 0) {
+      const notif_main = document.createElement("div");
+      notif_main.classList.add("notif_comp");
+
+      const color_status = document.createElement("div");
+      color_status.classList.add("color_status");
+      notif_main.appendChild(color_status);
+
+      const message = document.createElement("span");
+      notif_main.appendChild(message);
+      if (notif.seller_confirmation === 1) {
+        color_status.style.background = "rgb(22, 218, 22)";
+        message.textContent = `your order of id ${notif.prod_c_id} has been approved`;
+      } else {
+        color_status.style.backgroundColor = "red";
+        message.textContent = `your order of id ${notif.prod_c_id} has been denied`;
+      }
+      notif_main.style.width = "100%";
+      notif_list.append(notif_main);
+    }
+  });
+}
+

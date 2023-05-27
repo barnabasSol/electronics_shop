@@ -1,0 +1,68 @@
+#pending_header {
+  background-color: whitesmoke;
+  grid-area: phdr;
+  display: flex;
+  justify-content: space-between;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+}
+
+#pending_header img {
+  margin-top: 1%;
+  margin-right: 1%;
+  height: 25px;
+}
+
+#pending_header span {
+  margin-top: 2%;
+  font-size: 3.5vw;
+  color: white;
+  background-color: rebeccapurple;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+#pending_clear_btn_div {
+  background-color: whitesmoke;
+  grid-area: pcb;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#pending_clear_btn_div button {
+  height: 30px;
+  width: 90px;
+  border: none;
+  color: white;
+  background-color: red;
+  border-radius: 7px;
+  margin-right: 3%;
+}
+
+#pending_section {
+  background-color: whitesmoke;
+  grid-area: psc;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow: scroll;
+}
+
+#pending_orders {
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+  position: absolute;
+  height: 500px;
+  width: 70%;
+  background-color: antiquewhite;
+  top: 90%;
+  transition: transform 0.5s;
+  display: grid;
+  grid-template-rows: 1fr 1fr 10fr;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "phdr"
+    "pcb"
+    "psc";
+}

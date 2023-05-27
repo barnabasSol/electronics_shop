@@ -39,12 +39,17 @@
   background-color: #fff7ea;
   grid-area: phdr;
   display: flex;
+  align-items: center;
   justify-content: flex-end;
 }
 .prod_header img {
   height: 30px;
   margin-right: 2%;
   margin-top: 1.3%;
+}
+
+.prod_header span{
+  font-size: 1.5vw;
 }
 
 .name_price_rating {
@@ -74,8 +79,14 @@
   grid-area: pdesc;
   display: flex;
   color: black;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  gap: 10%;
+}
+
+#seller_reputation{
+  color: rebeccapurple;
 }
 
 .prod_description span {
@@ -88,6 +99,12 @@
   color: rgb(82, 79, 79);
   display: flex;
   justify-content: space-evenly;
+}
+
+.prod_seller_info a{
+  text-decoration: none;
+  color: rebeccapurple;
+  text-decoration: underline;
 }
 
 #prod_detail_div {

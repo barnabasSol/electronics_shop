@@ -1,4 +1,15 @@
-drop TRIGGER update_review_and_reputation;
+
+DELIMITER //
+CREATE TRIGGER insert_seller 
+AFTER INSERT ON users
+FOR EACH ROW 
+BEGIN
+    IF new.login_id REGEXP '^ess[0-9]{3}$' THEN
+        INSERT INTO seller (login_id, reputation) 
+        VALUES (new.login_id, 0);
+    END IF;
+END; // 
+DELIMITER ;
 
 
 DELIMITER //

@@ -1,13 +1,15 @@
 <?php
+// Start the session
 session_start();
 
-if(session_destroy()){
-  $response = array('status' => 'success', 'message' => 'Session destroyed successfully');
-} else {
-  $response = array('status' => 'error', 'message' => 'Error destroying session');
-}
+// Unset the session variables
+unset($_SESSION['login_id']);
 
-echo json_encode($response);
-header('Location: ../index.html');
-exit();
+// Destroy the session
+session_destroy();
+session_regenerate_id(true);
+
+// Redirect the user to the logout page
+header('Location: index.html');
+exit;
 ?>

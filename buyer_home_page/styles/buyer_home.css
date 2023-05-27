@@ -104,9 +104,7 @@ aside {
     "logout_div logout_div";
 }
 
-.pending_amnt,
-.pos_notif_amnt,
-.neg_notif_amnt {
+.pending_amnt {
   height: 22px;
   width: 22px;
   border-radius: 50%;
@@ -117,15 +115,14 @@ aside {
   align-items: center;
 }
 
-
-.pending_amnt{
+.pending_amnt {
   background-color: rebeccapurple;
 }
-.pos_notif_amnt{
+.pos_notif_amnt {
   background-color: rgb(9, 190, 9);
   left: 80%;
 }
-.neg_notif_amnt{
+.neg_notif_amnt {
   background-color: red;
   left: 90%;
 }
@@ -133,10 +130,10 @@ aside {
 .pending_amnt span {
   color: white;
 }
-.pos_notif_amnt span{
+.pos_notif_amnt span {
   color: white;
 }
-.neg_notif_amnt span{
+.neg_notif_amnt span {
   color: white;
 }
 
@@ -367,6 +364,8 @@ aside {
 }
 
 #blur {
+  overflow: hidden;
+  position: relative;
   position: absolute;
   height: 100%;
   width: 100%;
@@ -519,6 +518,7 @@ aside {
 .wrapper {
   position: relative;
   display: grid;
+  min-height: 100vh;
   height: 100vh;
   grid-template-rows: 1fr 1fr 8fr;
   grid-template-columns: 1fr 9fr 1fr;

@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="buyer_home.css" />
-    <link rel="stylesheet" href="product_detail.css" />
+    <link rel="stylesheet" href="./styles/buyer_home.css" />
+    <link
+      rel="stylesheet"
+      href="components/confirmation_comp/confirmation_comp.css"
+    />
+    <link rel="stylesheet" href="./styles/product_detail.css" />
     <link rel="stylesheet" href="components/product_item/product_item.css" />
     <link rel="stylesheet" href="components/cart_item/cart_item.css" />
+    <link rel="stylesheet" href="components/notification_comp/notification.css" />
+    <link rel="stylesheet" href="./styles/pending_order.css" />
+    <link rel="stylesheet" href="./styles/profile_setting.css" />
+    <link rel="stylesheet" href="./styles/notification.css" />
+    <link rel="stylesheet" href="./styles/history.css" />
+    <link rel="stylesheet" href="./styles/rating.css" />
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,6 +24,30 @@
   <body>
     <div class="wrapper">
       <div id="blur">
+        <div id="notif_list_container">
+          <div id="notif_header">
+            <img src="../assets/close.png" alt="" />
+          </div>
+          <div id="notif_main_div"></div>
+        </div>
+        <div id="profile_setting_container">
+          <div id="psetting_header"></div>
+          <div id="psetting_main_div"></div>
+        </div>
+        <div id="history_container">
+          <div id="history_header"></div>
+          <div id="history_main_div"></div>
+        </div>
+        <div id="pending_orders">
+          <div id="pending_header">
+            <span>Pending Orders</span>
+            <img src="../assets/close.png" alt="" />
+          </div>
+          <div id="pending_clear_btn_div">
+            <button id="clear_pending">Cancel All</button>
+          </div>
+          <div id="pending_section"></div>
+        </div>
         <div id="prod_detail_div">
           <div class="prod_images_div"></div>
           <nav class="img_nav">
@@ -21,21 +55,31 @@
             <button>next</button>
           </nav>
           <header class="prod_header">
-            <img src="../assets/close.png" alt="">
+            <img src="../assets/close.png" alt="" />
           </header>
           <div class="name_price_rating">
-           <span id="prod_name_detail">Mac</span>
-           <span id="prod_price_detail">200.00 birr</span>
-           <span id="prod_rating_detail">Rating: 5/5⭐</span>
+            <span id="prod_name_detail">Mac</span>
+            <span id="prod_price_detail">200.00 birr</span>
+            <span id="prod_rating_detail">Rating: 5/5⭐</span>
+            <div class="history_comp">
+              <div class="rating">
+                <input type="radio" id="star5" name="rating" value="5" /><label for="star5">5 stars</label>
+                <input type="radio" id="star4" name="rating" value="4" /><label for="star4">4 stars</label>
+                <input type="radio" id="star3" name="rating" value="3" /><label for="star3">3 stars</label>
+                <input type="radio" id="star2" name="rating" value="2" /><label for="star2">2 stars</label>
+                <input type="radio" id="star1" name="rating" value="1" /><label for="star1">1 star</label>
+              </div>
+              <button>confirm</button>
+            </div>
           </div>
           <div class="prod_description">
-            <span id="prod_descrip_detail">
-            </span>
+            <span id="prod_descrip_detail"> </span>
+            <span id="seller_reputation">Seller Reputation:/10⭐</span>
           </div>
           <footer class="prod_seller_info">
-            <span>seller:</span> 
+            <span>contact</span>
             <a class="email_link" href="" target="_blank"></a>
-            <span id="seller_number">0974276534</span>
+            <a id="seller_number" href="" target="_blank"></a>
           </footer>
         </div>
 
@@ -73,11 +117,22 @@
         </div>
 
         <div class="options">
-          <button class="opts" type="submit" name="setting_opt" value="profile">
+          <!-- <button
+            id="profile_button"
+            class="opts"
+            type="submit"
+            value="profile"
+          >
             <img src="../assets/resume.png" alt="" />
             Profile
-          </button>
-          <button class="opts" type="submit" name="setting_opt" value="pending">
+          </button> -->
+          <button
+            id="pending_button"
+            class="opts"
+            type="submit"
+            name="setting_opt"
+            value="pending"
+          >
             <img src="../assets/box.png" alt="" />
             Pending
             <div class="pending_amnt">
@@ -85,6 +140,7 @@
             </div>
           </button>
           <button
+            id="notif_button"
             class="opts"
             type="submit"
             name="setting_opt"
@@ -92,14 +148,14 @@
           >
             <img src="../assets/notification.png" alt="" />
             Notifiations
-            <div class="pos_notif_amnt">
-              <span>8</span>
-            </div>
-            <div class="neg_notif_amnt">
-              <span>8</span>
-            </div>
           </button>
-          <button class="opts" type="submit" name="setting_opt" value="history">
+          <button
+            id="history_btn"
+            class="opts"
+            type="submit"
+            name="setting_opt"
+            value="history"
+          >
             <img src="../assets/history.png" alt="" />
             History
           </button>
@@ -124,7 +180,7 @@
       <header class="logo">
         <img src="images/gadgets.png" alt="logo" />
       </header>
-      <form class="catagories_div" method="get" action="buyer_process.php">
+      <div class="catagories_div">
         <button
           clicked
           class="catagory"
@@ -157,10 +213,9 @@
             <option value="affordable">Affordable</option>
             <option value="expensive">Expensive</option>
             <option value="rating">Rating</option>
-            <option value="seller_reputation">Seller Reputation</option>
           </select>
         </div>
-      </form>
+      </div>
       <div class="left_space"></div>
       <main class="products_div">
         <span id="empty_msg">Not Available For Now</span>

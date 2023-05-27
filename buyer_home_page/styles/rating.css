@@ -1,0 +1,58 @@
+
+  .history_comp{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5%;
+    width: 100%;
+    background-color: transparent;
+    flex-wrap: wrap;
+    border-bottom: 1px solid black;
+  }
+  
+  .history_comp span{
+    color: black;
+  }
+  .rating {
+    float: left;
+  }
+  
+  .history_comp button{
+    border: none;
+    width: 100px;
+    height: 30px;
+    background-color: rebeccapurple;
+    color: white;
+    border-radius: 5px;
+  }
+  
+  .rating:not(:checked) > input {
+    position: absolute;
+    top: -9999px;
+    clip: rect(0,0,0,0);
+  }
+  
+  .rating:not(:checked) > label {
+    float: right;
+    width: 1em;
+    padding: 0 .1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 200%;
+    line-height: 1.2;
+  }
+  
+  .rating:not(:checked) > label:before {
+    content: '★ ';
+  }
+  
+  .rating > input:checked ~ label {
+    color: gold;
+  }
+  
+  .rating:not(:checked) > label:hover,
+  .rating:not(:checked) > label:hover ~ label {
+    color: gold;
+  }
+      
